@@ -95,6 +95,10 @@ public class Server {
     private void onClientConnected(Socket clientSocket) {
         ClientSession clientSession = new ClientSession(clientSocket);
         clientSession.start();
+        try {
+            clientSocket.close();
+        } catch (IOException ignored) {
+        }
     }
 
 }
