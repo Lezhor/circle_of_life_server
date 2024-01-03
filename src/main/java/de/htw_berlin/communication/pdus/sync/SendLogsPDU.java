@@ -1,6 +1,8 @@
 package de.htw_berlin.communication.pdus.sync;
 
 import de.htw_berlin.communication.pdus.PDU;
+import de.htw_berlin.engines.models.DBLog;
+import de.htw_berlin.engines.models.LogSerializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -37,7 +39,7 @@ public class SendLogsPDU implements PDU {
         DataOutputStream dos = new DataOutputStream(os);
         dos.writeInt(getID());
         dos.writeInt(logArray.length);
-        LogSerializer logSerializer = App.getLogSerializer();
+        LogSerializer logSerializer = LogSerializer.getInstance();
         for (DBLog<?> log : logArray) {
             logSerializer.serialize(os, log);
         }
@@ -48,7 +50,7 @@ public class SendLogsPDU implements PDU {
         DataInputStream dis = new DataInputStream(is);
         int logCount = dis.readInt();
         DBLog<?>[] logs = new DBLog[logCount];
-        LogSerializer logSerializer = App.getLogSerializer();
+        LogSerializer logSerializer = LogSerializer.getInstance();
         for (int i = 0; i < logs.length; i++) {
             logs[i] = logSerializer.deserialize(is);
         }
