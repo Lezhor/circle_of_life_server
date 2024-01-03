@@ -94,8 +94,8 @@ public class Server {
      */
     private void onClientConnected(Socket clientSocket) {
         ClientSession clientSession = new ClientSession(clientSocket);
-        clientSession.start();
         try {
+            clientSession.start();
             clientSocket.close();
         } catch (IOException ignored) {
         }

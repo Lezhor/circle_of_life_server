@@ -1,5 +1,9 @@
 package de.htw_berlin.communication;
 
+import de.htw_berlin.communication.protocols.Protocol;
+
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 /**
@@ -21,8 +25,14 @@ public class ClientSession {
         this.clientSocket = clientSocket;
     }
 
-    public void start() {
-        // TODO: 03.01.2024 Client Session with PDUSerializer
+    public void start() throws IOException {
+        DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
+        String protocolName = dis.readUTF();
+        String protocolVersion = dis.readUTF();
+        Protocol protocol = Protocol.get(protocolName, protocolVersion);
+        if (protocol != null) {
+            protocol.run(clientSocket);
+        }
     }
 
 }
