@@ -1,8 +1,6 @@
 package de.htw_berlin.communication.pdus.sync;
 
-import com.android.circleoflife.communication.pdus.PDU;
-import com.android.circleoflife.database.models.User;
-import com.android.circleoflife.database.models.additional.EntityStringParser;
+import de.htw_berlin.communication.pdus.PDU;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

@@ -1,9 +1,6 @@
 package de.htw_berlin.communication.pdus.sync;
 
-import com.android.circleoflife.application.App;
-import com.android.circleoflife.communication.pdus.PDU;
-import com.android.circleoflife.logging.model.DBLog;
-import com.android.circleoflife.logging.serializing.LogSerializer;
+import de.htw_berlin.communication.pdus.PDU;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -14,7 +11,6 @@ import java.io.OutputStream;
 /**
  * Used to send logs to server.<br>
  * The datablock contains an integer (how many Logs are there), followed by the serialisation of the logs.
- * @see LogSerializer
  */
 public class SendLogsPDU implements PDU {
 

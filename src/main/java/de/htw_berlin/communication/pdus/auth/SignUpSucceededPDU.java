@@ -1,12 +1,12 @@
 package de.htw_berlin.communication.pdus.auth;
 
-import com.android.circleoflife.communication.pdus.PDUWithNoData;
+import de.htw_berlin.communication.pdus.PDUWithNoData;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Part of the {@link com.android.circleoflife.communication.protocols.SignUpProtocol SignUpProtocol}.
+ * Part of the SignUpProtocol.
  * Server sends this to client if signUp succeeded
  */
 public class SignUpSucceededPDU implements PDUWithNoData {
