@@ -14,6 +14,8 @@ import java.io.OutputStream;
  */
 public class SendLogsPDU implements PDU {
 
+    // FIXME: 03.01.2024 add DBLog class
+
     public final static int ID = 4;
 
     private DBLog<?>[] logArray;

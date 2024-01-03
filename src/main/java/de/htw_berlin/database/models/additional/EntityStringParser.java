@@ -9,6 +9,9 @@ import java.util.UUID;
 
 public final class EntityStringParser {
 
+    // TODO: 03.01.2024 Create all entities
+    // TODO: 03.01.2024 Add all string parse methods in here
+
     public static final String SEPARATOR = "dkbKBj9dkjkKJd";
     public static final String USER = "user";
     /**
