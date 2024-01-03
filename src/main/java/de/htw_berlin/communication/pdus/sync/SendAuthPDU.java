@@ -1,6 +1,8 @@
 package de.htw_berlin.communication.pdus.sync;
 
 import de.htw_berlin.communication.pdus.PDU;
+import de.htw_berlin.database.models.User;
+import de.htw_berlin.database.models.additional.EntityStringParser;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
