@@ -1,12 +1,13 @@
 package de.htw_berlin.database.models;
 
+import de.htw_berlin.database.models.additional.Copyable;
 import de.htw_berlin.database.validators.StringValidator;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-public class User {
+public class User implements Entity, Copyable<User> {
 
     private UUID id;
     private String username;
@@ -70,5 +71,15 @@ public class User {
                 && this.username.equals(that.username)
                 && this.password.equals(that.password)
                 && this.timeOfCreation.equals(that.timeOfCreation);
+    }
+
+    @Override
+    public UUID getUserID() {
+        return getId();
+    }
+
+    @Override
+    public User copy() {
+        return new User(this.id, this.username, this.password, this.timeOfCreation);
     }
 }
