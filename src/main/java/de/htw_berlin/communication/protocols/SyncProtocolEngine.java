@@ -1,5 +1,6 @@
 package de.htw_berlin.communication.protocols;
 
+import de.htw_berlin.application.App;
 import de.htw_berlin.communication.pdus.sync.*;
 import de.htw_berlin.engines.models.DBLog;
 import de.htw_berlin.logging.Log;
@@ -34,8 +35,7 @@ public class SyncProtocolEngine implements Protocol {
             // Step 1:
             SendAuthPDU sendAuthPDU = serializer.deserialize(SendAuthPDU.class);
             Log.d(TAG, client + "Received sendAuthPDU: " + sendAuthPDU.getUser());
-            // TODO: 04.01.2024 Check Auth in Database
-            boolean authSuccessful = true;
+            boolean authSuccessful = App.getAuthentication().isAuthenticated(sendAuthPDU.getUser());
             Log.d(TAG, client + "authenticationSuccessful: " + authSuccessful);
 
             // Step 2:
