@@ -84,21 +84,6 @@ public final class Log {
     }
 
     /**
-     * Resets color from every PrintStream
-     */
-    private static void resetColor() {
-        setColor(ConsoleColors.RESET);
-    }
-
-    /**
-     * Sets color to every PrintStream
-     * @param color color
-     */
-    private static void setColor(String color) {
-        printers.forEach(p -> p.print(color));
-    }
-
-    /**
      * Returns string representing the timestamp
      * @return timestamp
      */
