@@ -1,9 +1,22 @@
 package de.htw_berlin.communication.protocols;
 
+import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Protocol interface has methods getProtocolName() getVersion() and run()<br>
+ * the run() method is the actual implementation of the protocol.<br>
+ * The other two are needed for the header of the protocol e.g. in the ProtocolSerializer
+ * @see ProtocolSerializer
+ */
 public interface Protocol {
 
+    /**
+     * Returns the protocol implementation which matches the given name and version.
+     * @param name name of the protocol
+     * @param version version of the protocol
+     * @return protocol instance or null if no matching protocol is found
+     */
     static Protocol get(String name, String version) {
         if (name.equals(SyncProtocolEngine.PROTOCOL_NAME) && SyncProtocolEngine.supportsVersion(version)) {
             return new SyncProtocolEngine();
@@ -12,7 +25,12 @@ public interface Protocol {
         }
     }
 
-    void run(Socket socket);
+    /**
+     * Implementation of the protocol, with serializing and deserializing pdu
+     * @param socket
+     * @throws IOException
+     */
+    void run(Socket socket) throws IOException;
 
     /**
      * Returns the current Protocol Name

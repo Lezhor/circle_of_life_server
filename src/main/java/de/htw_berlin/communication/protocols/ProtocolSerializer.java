@@ -84,7 +84,7 @@ public class ProtocolSerializer {
     /**
      * Deserializes Header from InputStream. If no Exception thrown the Header is valid.
      *
-     * @throws IOException if reading failed or if potocol name or version are not like in the specified {@link SyncProtocol}
+     * @throws IOException if reading failed or if potocol name or version are not like in the specified
      */
     private void deserializeHeader() throws IOException {
         DataInputStream dis = new DataInputStream(is);

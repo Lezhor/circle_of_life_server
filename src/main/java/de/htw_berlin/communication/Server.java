@@ -96,8 +96,14 @@ public class Server {
         ClientSession clientSession = new ClientSession(clientSocket);
         try {
             clientSession.start();
-            clientSocket.close();
         } catch (IOException ignored) {
+        } finally {
+            if (!clientSocket.isClosed()) {
+                try {
+                    clientSocket.close();
+                } catch (IOException ignored) {
+                }
+            }
         }
     }
 
