@@ -28,13 +28,13 @@ public class ClientSession {
     }
 
     public void start() throws IOException {
-        Log.d(TAG, "Starting Client Session");
+        Log.d(TAG, "Client '" + clientSocket.getRemoteSocketAddress().toString() + "': Starting Session");
         DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
         String protocolName = dis.readUTF();
         String protocolVersion = dis.readUTF();
         Protocol protocol = Protocol.get(protocolName, protocolVersion);
         if (protocol != null) {
-            Log.d(TAG, "Starting Protocol: " + protocol.getProtocolName() + "-" + protocol.getVersion());
+            Log.d(TAG, "Client '" + clientSocket.getRemoteSocketAddress().toString() + "': Starting Protocol: " + protocol.getProtocolName() + "-" + protocol.getVersion());
             protocol.run(clientSocket);
         }
     }

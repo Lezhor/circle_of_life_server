@@ -3,8 +3,7 @@ package de.htw_berlin.communication;
 import de.htw_berlin.logging.Log;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.util.concurrent.*;
 
 /**
@@ -63,12 +62,19 @@ public class Server {
      * Opens a ServerSocket and waits for users to connect. An accepted connection is transferred to a separate Thread
      */
     private void serverSession() {
-        Log.d(TAG, "Starting Server Session");
+        try {
+            try (final DatagramSocket socket = new DatagramSocket()) {
+                socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+                String ip = socket.getLocalAddress().getHostAddress();
+                Log.d(TAG, "Starting Server Session with IP '" + ip + "'");
+            }
+        } catch (UnknownHostException | SocketException ignored) {
+        }
         Log.d(TAG, "Listening on port " + PORT);
         while (!Thread.interrupted()) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                Log.i(TAG, "Client Connected!");
+                Log.i(TAG, "Client '" + clientSocket.getRemoteSocketAddress().toString() + "' connected!");
                 service.submit(() -> onClientConnected(clientSocket));
             } catch (IOException e) {
                 if (serverSocket.isClosed()) {
@@ -86,13 +92,15 @@ public class Server {
 
     /**
      * Is executed every time a client connects to the server.
+     *
      * @param clientSocket clientSocket
      */
     private void onClientConnected(Socket clientSocket) {
         ClientSession clientSession = new ClientSession(clientSocket);
         try {
             clientSession.start();
-        } catch (IOException ignored) {
+        } catch (IOException e) {
+            Log.w(TAG, "Client '" + clientSocket.getRemoteSocketAddress().toString() + "' - Session terminated", e);
         } finally {
             if (!clientSocket.isClosed()) {
                 try {
