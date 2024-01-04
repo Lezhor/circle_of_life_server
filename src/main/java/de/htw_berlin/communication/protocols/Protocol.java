@@ -27,8 +27,8 @@ public interface Protocol {
 
     /**
      * Implementation of the protocol, with serializing and deserializing pdu
-     * @param socket
-     * @throws IOException
+     * @param socket clientSocket
+     * @throws IOException if running protocol goes wrong. e.g. deserializing PDU
      */
     void run(Socket socket) throws IOException;
 
