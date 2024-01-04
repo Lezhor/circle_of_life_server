@@ -1,11 +1,13 @@
 package de.htw_berlin;
 
+import de.htw_berlin.communication.Server;
 import de.htw_berlin.logging.Log;
 
 /**
  * Main-class. This is where to launch the program
  */
 public class Main {
+    private static final String TAG = Main.class.getSimpleName();
 
     /**
      * Main-method
@@ -13,7 +15,10 @@ public class Main {
      */
     public static void main(String[] args) {
         Log.logToConsole(true);
-        // TODO: 03.01.2024 Start Server
+        Log.d(TAG, "Starting Application...");
+        Server server = new Server();
+        server.start();
+        Runtime.getRuntime().addShutdownHook(new Thread(server::shutDown));
     }
 
 }
