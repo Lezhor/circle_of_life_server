@@ -1,6 +1,6 @@
 package de.htw_berlin.database.control;
 
-import de.htw_berlin.database.control.daos.UserDao;
+import de.htw_berlin.database.control.daos.*;
 import de.htw_berlin.database.control.daos.impl.AppDatabaseImpl;
 
 /**
@@ -17,5 +17,15 @@ public abstract class AppDatabase {
      * @return UserDao
      */
     protected abstract UserDao getUserDao();
+
+    protected abstract CategoryDao getCategoryDao();
+
+    protected abstract CycleDao getCycleDao();
+
+    protected abstract TodoDao getTodoDao();
+
+    protected abstract AccomplishmentDao getAccomplishmentDao();
+
+    protected abstract LogDao getLogDao();
 
 }
