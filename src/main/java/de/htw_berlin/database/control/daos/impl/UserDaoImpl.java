@@ -10,7 +10,7 @@ import de.htw_berlin.logging.Log;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class UserDaoImpl implements UserDao {
+class UserDaoImpl implements UserDao {
     private static final String TAG = "UserDao";
 
     private static volatile UserDaoImpl instance;
@@ -19,7 +19,7 @@ public class UserDaoImpl implements UserDao {
      * getter for singleton pattern
      * @return only existing instance of this class
      */
-    public static UserDao getInstance() {
+    static UserDao getInstance() {
         if (instance == null) {
             synchronized (UserDaoImpl.class) {
                 if (instance == null) {
