@@ -23,8 +23,6 @@ public class DatabaseControllerImpl implements DatabaseController {
     }
 
 
-    // TODO: 05.01.2024 Implement all methods
-
     private final AppDatabase db;
 
     private DatabaseControllerImpl() {
@@ -58,76 +56,76 @@ public class DatabaseControllerImpl implements DatabaseController {
 
     @Override
     public void insertCategory(Category category) {
-
+        db.getCategoryDao().insert(category);
     }
 
     @Override
     public void updateCategory(Category category) {
-
+        db.getCategoryDao().update(category);
     }
 
     @Override
     public void deleteCategory(Category category) {
-
+        db.getCategoryDao().delete(category);
     }
 
     @Override
     public void insertCycle(Cycle cycle) {
-
+        db.getCycleDao().insert(cycle);
     }
 
     @Override
     public void updateCycle(Cycle cycle) {
-
+        db.getCycleDao().update(cycle);
     }
 
     @Override
     public void deleteCycle(Cycle cycle) {
-
+        db.getCycleDao().delete(cycle);
     }
 
     @Override
     public void insertTodo(Todo todo) {
-
+        db.getTodoDao().insert(todo);
     }
 
     @Override
     public void updateTodo(Todo todo) {
-
+        db.getTodoDao().update(todo);
     }
 
     @Override
     public void deleteTodo(Todo todo) {
-
+        db.getTodoDao().delete(todo);
     }
 
     @Override
     public void insertAccomplishment(Accomplishment accomplishment) {
-
+        db.getAccomplishmentDao().insert(accomplishment);
     }
 
     @Override
     public void updateAccomplishment(Accomplishment accomplishment) {
-
+        db.getAccomplishmentDao().update(accomplishment);
     }
 
     @Override
     public void deleteAccomplishment(Accomplishment accomplishment) {
-
+        db.getAccomplishmentDao().delete(accomplishment);
     }
 
     @Override
     public void insertLog(DBLog<?> log) {
-
+        db.getLogDao().insert(log);
     }
 
     @Override
     public void updateLog(DBLog<?> log) {
-
+        db.getLogDao().update(log);
     }
 
     @Override
     public void deleteLog(DBLog<?> log) {
-
+        db.getLogDao().delete(log);
     }
 }
