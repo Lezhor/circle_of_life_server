@@ -23,7 +23,7 @@ public class UUIDConverter {
      * @return uuid
      */
     public static UUID uuidFromString(String str) {
-        return str == null ? null : UUID.fromString(str);
+        return str == null || str.equalsIgnoreCase("null") ? null : UUID.fromString(str);
     }
 
 }

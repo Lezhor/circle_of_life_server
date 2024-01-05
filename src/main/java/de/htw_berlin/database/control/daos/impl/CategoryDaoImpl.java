@@ -3,9 +3,12 @@ package de.htw_berlin.database.control.daos.impl;
 import de.htw_berlin.database.control.daos.CategoryDao;
 import de.htw_berlin.database.jdbc.JDBCController;
 import de.htw_berlin.database.models.Category;
+import de.htw_berlin.database.models.User;
+import de.htw_berlin.database.models.type_converters.LocalDateTimeConverter;
 import de.htw_berlin.database.models.type_converters.UUIDConverter;
 import de.htw_berlin.logging.Log;
 
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.UUID;
 
@@ -72,6 +75,18 @@ class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public Category getById(UUID id) {
-        return null;
+        return JDBCController.executeInDB(con -> {
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM categories WHERE id = '" + UUIDConverter.uuidToString(id) + "'");
+            if (!rs.next()) {
+                return null;
+            }
+            return new Category(
+                    UUIDConverter.uuidFromString(rs.getString("id")),
+                    rs.getString("category_name"),
+                    UUIDConverter.uuidFromString(rs.getString("user_id")),
+                    UUIDConverter.uuidFromString(rs.getString("parent_id"))
+            );
+        });
     }
 }

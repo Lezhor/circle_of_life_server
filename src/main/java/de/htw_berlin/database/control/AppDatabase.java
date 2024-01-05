@@ -37,11 +37,13 @@ public abstract class AppDatabase {
      * @param <E> type of the entity
      */
     <E extends Entity> BaseDao<E> getDao(E entity) {
-        return (BaseDao<E>) getDao(entity.getClass());
+        return entity == null ? null : (BaseDao<E>) getDao(entity.getClass());
     }
 
     <E extends Entity> BaseDao<E> getDao(Class<E> entityClass) {
-        if (entityClass.equals(User.class)) {
+        if (entityClass == null) {
+            return null;
+        } else if (entityClass.equals(User.class)) {
             return (BaseDao<E>) getUserDao();
         } else if (entityClass.equals(Category.class)) {
             return (BaseDao<E>) getCategoryDao();

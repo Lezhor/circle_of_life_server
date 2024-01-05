@@ -76,7 +76,7 @@ public class DatabaseControllerImpl implements DatabaseController {
     public <E extends Entity> E getById(UUID id, Class<E> entityClass) {
         BaseDao<E> dao = db.getDao(entityClass);
         if (dao == null) {
-            Log.w(TAG, "Couldn't find dao for entity-class " + entityClass.getName());
+            Log.w(TAG, "Couldn't find dao for entity-class " + (entityClass == null ? null : entityClass.getName()));
             return null;
         } else {
             return dao.getById(id);
