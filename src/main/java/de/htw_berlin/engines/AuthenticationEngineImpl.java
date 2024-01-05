@@ -1,5 +1,6 @@
 package de.htw_berlin.engines;
 
+import de.htw_berlin.application.App;
 import de.htw_berlin.database.models.User;
 
 /**
@@ -32,13 +33,19 @@ public class AuthenticationEngineImpl implements AuthenticationEngine {
 
     @Override
     public boolean isAuthenticated(User user) {
-        // TODO: 04.01.2024 Check for Authentication in database
-        return true;
+        User actualUser = App.getDatabaseController().getUserByUsername(user.getUsername());
+        if (actualUser == null) {
+            return false;
+        }
+        return actualUser.getPassword().equals(user.getPassword());
     }
 
     @Override
     public User getAuthenticatedUser(String username, String password) {
-        // TODO: 04.01.2024 Search for user in database
-        return null;
+        User user = App.getDatabaseController().getUserByUsername(username);
+        if (user == null) {
+            return null;
+        }
+        return (user.getPassword().equals(password)) ? user : null;
     }
 }
