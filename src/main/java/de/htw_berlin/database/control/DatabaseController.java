@@ -4,6 +4,7 @@ import de.htw_berlin.database.control.daos.BaseDao;
 import de.htw_berlin.database.models.*;
 import de.htw_berlin.engines.models.DBLog;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.UUID;
 
 /**
@@ -19,6 +20,8 @@ public interface DatabaseController {
     <E extends Entity> void delete(E entity);
     <E extends Entity> E getById(UUID id, Class<E> entityClass);
     <E extends Entity> boolean exists(E entity);
+
+    void clearUser(User user) throws OperationNotSupportedException;
 
     /**
      * Searches for user with given username in database

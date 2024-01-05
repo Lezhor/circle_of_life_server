@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.naming.OperationNotSupportedException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,14 +23,23 @@ public class CategoryDaoImplTest {
 
     private void setUp() {
         Log.logToConsole(true);
-        user = new User(UUID.randomUUID(), "this_test_user_has_a_super_long_name_so_hopefully_nobody_takes_it_when_the_app_launches", "test_password", LocalDateTime.now());
+        String username = "this_test_user_has_a_super_long_name_so_hopefully_nobody_takes_it_when_the_app_launches";
+        try {
+            db.clearUser(db.getUserByUsername(username));
+        } catch (OperationNotSupportedException e) {
+            fail(e);
+        }
+        user = new User(UUID.randomUUID(), username, "test_password", LocalDateTime.now());
         category = new Category(UUID.randomUUID(), "TestCategory", user.getUserID(), null);
         db.insert(user);
     }
 
     private void tearDown() {
-        db.delete(category);
-        db.delete(user);
+        try {
+            db.clearUser(user);
+        } catch (OperationNotSupportedException e) {
+            fail(e);
+        }
     }
 
     @Test
@@ -44,6 +54,7 @@ public class CategoryDaoImplTest {
 
     @Test
     public void testNullParamsShouldNotThrowException() {
+        Log.logToConsole(false);
         assertDoesNotThrow(() -> db.insert(null));
         assertDoesNotThrow(() -> db.update(null));
         assertDoesNotThrow(() -> db.delete(null));

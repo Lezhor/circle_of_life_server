@@ -5,10 +5,12 @@ import de.htw_berlin.database.models.*;
 import de.htw_berlin.engines.models.DBLog;
 import de.htw_berlin.logging.Log;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.UUID;
 
 public class DatabaseControllerImpl implements DatabaseController {
     private static final String TAG = DatabaseController.class.getSimpleName();
+    private static final boolean CLEARING_USER_ENABLED = true; // TODO: 05.01.2024 Disable for final release!
 
     private static volatile DatabaseControllerImpl instance;
 
@@ -91,6 +93,18 @@ public class DatabaseControllerImpl implements DatabaseController {
             return false;
         } else {
             return dao.exists(entity);
+        }
+    }
+
+    @Override
+    public void clearUser(User user) throws OperationNotSupportedException {
+        // TODO: 05.01.2024
+        if (CLEARING_USER_ENABLED) {
+            if (user != null) {
+                db.getUserDao().clearUser(user);
+            }
+        } else {
+            throw new OperationNotSupportedException("Clearing users data is disabled!!!");
         }
     }
 

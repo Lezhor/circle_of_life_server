@@ -112,4 +112,18 @@ class UserDaoImpl implements UserDao {
             return user;
         });
     }
+
+    @Override
+    public void clearUser(User user) {
+        JDBCController.executeInDB(con -> {
+            Statement statement = con.createStatement();
+            statement.execute("DELETE FROM logs WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
+            statement.execute("DELETE FROM accomplishments WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
+            statement.execute("DELETE FROM todos WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
+            statement.execute("DELETE FROM cycles WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
+            statement.execute("DELETE FROM categories WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
+            statement.execute("DELETE FROM users WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
+            Log.d(TAG, "Cleared user: " + user);
+        });
+    }
 }
