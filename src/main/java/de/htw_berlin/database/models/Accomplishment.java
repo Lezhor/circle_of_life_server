@@ -68,6 +68,7 @@ public class Accomplishment implements Entity, Copyable<Accomplishment> {
         this.timestamp = dateTime.toLocalTime();
     }
 
+    @Override
     public UUID getId() {
         return id;
     }

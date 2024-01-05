@@ -57,6 +57,7 @@ public class LogEntity implements Entity, Copyable<LogEntity> {
         this.log = log;
     }
 
+    @Override
     public UUID getId() {
         return id;
     }

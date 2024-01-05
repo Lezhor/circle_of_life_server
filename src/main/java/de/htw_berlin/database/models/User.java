@@ -21,6 +21,7 @@ public class User implements Entity, Copyable<User> {
         setTimeOfCreation(timeOfCreation);
     }
 
+    @Override
     public UUID getId() {
         return id;
     }

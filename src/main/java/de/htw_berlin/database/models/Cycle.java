@@ -131,6 +131,7 @@ public class Cycle implements Entity, Copyable<Cycle> {
                 && this.archived == that.archived;
     }
 
+    @Override
     public UUID getId() {
         return id;
     }

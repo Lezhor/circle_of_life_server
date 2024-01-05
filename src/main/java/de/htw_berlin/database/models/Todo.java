@@ -123,6 +123,7 @@ public class Todo implements Entity, Copyable<Todo> {
                 && Objects.equals(this.dueDate, that.dueDate);
     }
 
+    @Override
     public UUID getId() {
         return id;
     }

@@ -34,6 +34,7 @@ public class Category implements Entity, Copyable<Category> {
         this.parentID = parentID;
     }
 
+    @Override
     public UUID getId() {
         return id;
     }
