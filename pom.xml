@@ -13,7 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>19</maven.compiler.release>
-	<start>de.htw_berlin.Main</start>
+	<start>de.htw_berlin.application.Main</start>
   </properties>
 
   <dependencies>
