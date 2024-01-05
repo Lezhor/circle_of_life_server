@@ -10,7 +10,15 @@ public class JDBCController {
     private static final String TAG = JDBCController.class.getSimpleName();
 
     public static void executeInDB(SQLQuery task) {
+        executeInDB(con -> {
+            task.execute(con);
+            return null;
+        });
+    }
+
+    public static <T> T executeInDB(SQLQueryWithResult<T> task) {
         Connection connection = null;
+        T result = null;
 
         try {
 
@@ -21,7 +29,7 @@ public class JDBCController {
         }
         try {
             if (connection != null) {
-                task.execute(connection);
+                result = task.execute(connection);
             }
         } catch (SQLException e) {
             Log.w(TAG, "Executing query failed", e);
@@ -34,6 +42,7 @@ public class JDBCController {
             }
         }
 
+        return result;
     }
 
 }

@@ -7,6 +7,7 @@ import de.htw_berlin.database.models.type_converters.LocalDateTimeConverter;
 import de.htw_berlin.database.models.type_converters.UUIDConverter;
 import de.htw_berlin.logging.Log;
 
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class UserDaoImpl implements UserDao {
@@ -68,6 +69,28 @@ public class UserDaoImpl implements UserDao {
             statement.execute("DELETE FROM users " +
                     "WHERE \"userID\" = '" + UUIDConverter.uuidToString(user.getId()) + "'");
             Log.d(TAG, "Deleted user: " + user);
+        });
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        return JDBCController.executeInDB(con -> {
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE username = '" + username + "'");
+            if (!rs.next()) {
+                Log.d(TAG, "No user with username '" + username + "'");
+                return null;
+            }
+            User user = new User(
+                    UUIDConverter.uuidFromString(rs.getString("userID")),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    LocalDateTimeConverter.localDateTimeFromString(rs.getString("creation_time"))
+            );
+            if (rs.next()) {
+                Log.i(TAG, "There are more than one users with username '" + username + "'");
+            }
+            return user;
         });
     }
 }

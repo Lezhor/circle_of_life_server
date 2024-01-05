@@ -1,6 +1,5 @@
 package de.htw_berlin;
 
-import de.htw_berlin.application.App;
 import de.htw_berlin.communication.Server;
 import de.htw_berlin.database.control.AppDatabase;
 import de.htw_berlin.database.jdbc.JDBCController;
@@ -53,22 +52,12 @@ public class Main {
         user.setUsername("john_doe");
 
         AppDatabase.getUserDao().update(user);
-        AppDatabase.getUserDao().insert(new User(UUID.randomUUID(), "jane_doe", "another_password", LocalDateTime.now()));
+        //AppDatabase.getUserDao().insert(new User(UUID.randomUUID(), "jane_doe", "another_password", LocalDateTime.now()));
 
-        JDBCController.executeInDB(con -> {
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE \"username\" = 'jane_doe' LIMIT 1");
-            if (rs.next()) {
-                user.setId(UUIDConverter.uuidFromString(rs.getString("userID")));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setTimeOfCreation(LocalDateTimeConverter.localDateTimeFromString(rs.getString("creation_time")));
-            } else {
-                Log.d(TAG, "No User found");
-            }
-        });
+        User user2 = AppDatabase.getUserDao().getByUsername("jane_doe");
+        Log.d(TAG, "Retrieved user: " + user2);
 
-        AppDatabase.getUserDao().delete(user);
+        //AppDatabase.getUserDao().delete(user);
     }
 
 }
