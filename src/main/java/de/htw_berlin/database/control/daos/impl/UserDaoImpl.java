@@ -9,6 +9,7 @@ import de.htw_berlin.logging.Log;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.UUID;
 
 class UserDaoImpl implements UserDao {
     private static final String TAG = "UserDao";
@@ -40,7 +41,7 @@ class UserDaoImpl implements UserDao {
     public void insert(User user) {
         JDBCController.executeInDB(con -> {
             Statement statement = con.createStatement();
-            statement.execute("INSERT INTO users (\"userID\", \"username\", \"password\", \"creation_time\") VALUES (" +
+            statement.execute("INSERT INTO users (user_id, username, password, creation_time) VALUES (" +
                     "'" + UUIDConverter.uuidToString(user.getUserID()) + "', " +
                     "'" + user.getUsername() + "', " +
                     "'" + user.getPassword() + "', " +
@@ -57,7 +58,7 @@ class UserDaoImpl implements UserDao {
                     "username = '" + user.getUsername() + "', " +
                     "password = '" + user.getPassword() + "', " +
                     "creation_time = '" + LocalDateTimeConverter.localDateTimeToString(user.getTimeOfCreation()) + "' " +
-                    "WHERE \"userID\" = '" + UUIDConverter.uuidToString(user.getId()) + "'");
+                    "WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
             Log.d(TAG, "Updated user: " + user);
         });
     }
@@ -67,8 +68,26 @@ class UserDaoImpl implements UserDao {
         JDBCController.executeInDB(con -> {
             Statement statement = con.createStatement();
             statement.execute("DELETE FROM users " +
-                    "WHERE \"userID\" = '" + UUIDConverter.uuidToString(user.getId()) + "'");
+                    "WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
             Log.d(TAG, "Deleted user: " + user);
+        });
+    }
+
+    @Override
+    public User getById(UUID id) {
+        return JDBCController.executeInDB(con -> {
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE user_id = '" + UUIDConverter.uuidToString(id) + "'");
+            if (!rs.next()) {
+                Log.d(TAG, "No user with found with id '" + UUIDConverter.uuidToString(id) + "'");
+                return null;
+            }
+            return new User(
+                    UUIDConverter.uuidFromString(rs.getString("user_id")),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    LocalDateTimeConverter.localDateTimeFromString(rs.getString("creation_time"))
+            );
         });
     }
 
@@ -82,7 +101,7 @@ class UserDaoImpl implements UserDao {
                 return null;
             }
             User user = new User(
-                    UUIDConverter.uuidFromString(rs.getString("userID")),
+                    UUIDConverter.uuidFromString(rs.getString("user_id")),
                     rs.getString("username"),
                     rs.getString("password"),
                     LocalDateTimeConverter.localDateTimeFromString(rs.getString("creation_time"))

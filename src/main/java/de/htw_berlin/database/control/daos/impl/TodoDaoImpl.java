@@ -3,6 +3,8 @@ package de.htw_berlin.database.control.daos.impl;
 import de.htw_berlin.database.control.daos.TodoDao;
 import de.htw_berlin.database.models.Todo;
 
+import java.util.UUID;
+
 class TodoDaoImpl implements TodoDao {
 
     private static volatile TodoDaoImpl instance;
@@ -43,5 +45,10 @@ class TodoDaoImpl implements TodoDao {
     @Override
     public void delete(Todo entity) {
 
+    }
+
+    @Override
+    public Todo getById(UUID id) {
+        return null;
     }
 }

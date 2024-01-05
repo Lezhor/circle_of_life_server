@@ -3,6 +3,8 @@ package de.htw_berlin.database.control.daos.impl;
 import de.htw_berlin.database.control.daos.CycleDao;
 import de.htw_berlin.database.models.Cycle;
 
+import java.util.UUID;
+
 class CycleDaoImpl implements CycleDao {
 
     private static volatile CycleDaoImpl instance;
@@ -43,5 +45,10 @@ class CycleDaoImpl implements CycleDao {
     @Override
     public void delete(Cycle entity) {
 
+    }
+
+    @Override
+    public Cycle getById(UUID id) {
+        return null;
     }
 }

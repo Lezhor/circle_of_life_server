@@ -3,6 +3,8 @@ package de.htw_berlin.database.control.daos.impl;
 import de.htw_berlin.database.control.daos.AccomplishmentDao;
 import de.htw_berlin.database.models.Accomplishment;
 
+import java.util.UUID;
+
 class AccomplishmentDaoImpl implements AccomplishmentDao {
 
     private static volatile AccomplishmentDaoImpl instance;
@@ -43,5 +45,10 @@ class AccomplishmentDaoImpl implements AccomplishmentDao {
     @Override
     public void delete(Accomplishment entity) {
 
+    }
+
+    @Override
+    public Accomplishment getById(UUID id) {
+        return null;
     }
 }
