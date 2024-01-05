@@ -33,18 +33,18 @@ class AccomplishmentDaoImpl implements AccomplishmentDao {
     // TODO: 05.01.2024 implement db methods
 
     @Override
-    public void insert(Accomplishment entity) {
-
+    public boolean insert(Accomplishment accomplishment) {
+        return false;
     }
 
     @Override
-    public void update(Accomplishment entity) {
-
+    public boolean update(Accomplishment accomplishment) {
+        return false;
     }
 
     @Override
-    public void delete(Accomplishment entity) {
-
+    public boolean delete(Accomplishment accomplishment) {
+        return false;
     }
 
     @Override

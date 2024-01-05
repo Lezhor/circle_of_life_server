@@ -33,18 +33,18 @@ class TodoDaoImpl implements TodoDao {
     // TODO: 05.01.2024 Implement db methods
 
     @Override
-    public void insert(Todo entity) {
-
+    public boolean insert(Todo todo) {
+        return false;
     }
 
     @Override
-    public void update(Todo entity) {
-
+    public boolean update(Todo todo) {
+        return false;
     }
 
     @Override
-    public void delete(Todo entity) {
-
+    public boolean delete(Todo todo) {
+        return false;
     }
 
     @Override

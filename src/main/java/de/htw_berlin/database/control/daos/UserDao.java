@@ -6,5 +6,5 @@ public interface UserDao extends BaseDao<User> {
 
     User getByUsername(String username);
 
-    void clearUser(User user);
+    boolean clearUser(User user);
 }

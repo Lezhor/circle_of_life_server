@@ -1,6 +1,5 @@
 package de.htw_berlin.database.control;
 
-import de.htw_berlin.database.control.daos.BaseDao;
 import de.htw_berlin.database.models.*;
 import de.htw_berlin.engines.models.DBLog;
 
@@ -14,14 +13,14 @@ public interface DatabaseController {
 
     <E extends Entity> void executeLog(DBLog<E> log);
 
-    <E extends Entity> void insert(E entity);
+    <E extends Entity> boolean insert(E entity);
 
-    <E extends Entity> void update(E entity);
-    <E extends Entity> void delete(E entity);
+    <E extends Entity> boolean update(E entity);
+    <E extends Entity> boolean delete(E entity);
     <E extends Entity> E getById(UUID id, Class<E> entityClass);
     <E extends Entity> boolean exists(E entity);
 
-    void clearUser(User user) throws OperationNotSupportedException;
+    boolean clearUser(User user) throws OperationNotSupportedException;
 
     /**
      * Searches for user with given username in database

@@ -45,32 +45,35 @@ public class DatabaseControllerImpl implements DatabaseController {
     }
 
     @Override
-    public <E extends Entity> void insert(E entity) {
+    public <E extends Entity> boolean insert(E entity) {
         BaseDao<E> dao = db.getDao(entity);
         if (dao == null) {
             Log.w(TAG, "Couldn't find dao for entity " + entity);
+            return false;
         } else {
-            dao.insert(entity);
+            return dao.insert(entity);
         }
     }
 
     @Override
-    public <E extends Entity> void update(E entity) {
+    public <E extends Entity> boolean update(E entity) {
         BaseDao<E> dao = db.getDao(entity);
         if (dao == null) {
             Log.w(TAG, "Couldn't find dao for entity " + entity);
+            return false;
         } else {
-            dao.update(entity);
+            return dao.update(entity);
         }
     }
 
     @Override
-    public <E extends Entity> void delete(E entity) {
+    public <E extends Entity> boolean delete(E entity) {
         BaseDao<E> dao = db.getDao(entity);
         if (dao == null) {
             Log.w(TAG, "Couldn't find dao for entity " + entity);
+            return false;
         } else {
-            dao.delete(entity);
+            return dao.delete(entity);
         }
     }
 
@@ -79,6 +82,9 @@ public class DatabaseControllerImpl implements DatabaseController {
         BaseDao<E> dao = db.getDao(entityClass);
         if (dao == null) {
             Log.w(TAG, "Couldn't find dao for entity-class " + (entityClass == null ? null : entityClass.getName()));
+            return null;
+        } else if (id == null) {
+            Log.w(TAG, "Passed id is null");
             return null;
         } else {
             return dao.getById(id);
@@ -97,15 +103,16 @@ public class DatabaseControllerImpl implements DatabaseController {
     }
 
     @Override
-    public void clearUser(User user) throws OperationNotSupportedException {
+    public boolean clearUser(User user) throws OperationNotSupportedException {
         // TODO: 05.01.2024
         if (CLEARING_USER_ENABLED) {
             if (user != null) {
-                db.getUserDao().clearUser(user);
+                return db.getUserDao().clearUser(user);
             }
         } else {
             throw new OperationNotSupportedException("Clearing users data is disabled!!!");
         }
+        return false;
     }
 
     @Override

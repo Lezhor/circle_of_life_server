@@ -11,7 +11,10 @@ public class JDBCController {
 
     public static void executeInDB(SQLQuery task) {
         executeInDB(con -> {
-            task.execute(con);
+            try {
+                task.execute(con);
+            } catch (SQLException ignored) {
+            }
             return null;
         });
     }
@@ -21,27 +24,22 @@ public class JDBCController {
         T result = null;
 
         try {
-
             Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/circle_of_life_db", "postgres", "root");
-        } catch (SQLException | ClassNotFoundException e) {
-            Log.w(TAG, "Connection failed!!!", e);
+        } catch (ClassNotFoundException e) {
+            return null;
         }
         try {
-            if (connection != null) {
-                result = task.execute(connection);
-            }
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/circle_of_life_db", "postgres", "root");
         } catch (SQLException e) {
-            Log.w(TAG, "Executing query failed", e);
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ignored) {
-                }
+            Log.w(TAG, "Connection failed!!!", e);
+        }
+        if (connection != null) {
+            result = task.execute(connection);
+            try {
+                connection.close();
+            } catch (SQLException ignored) {
             }
         }
-
         return result;
     }
 

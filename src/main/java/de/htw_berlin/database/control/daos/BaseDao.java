@@ -7,11 +7,26 @@ import java.util.UUID;
 
 public interface BaseDao<T extends Entity> {
 
-    void insert(T entity);
+    /**
+     * Inserts entity into database
+     * @param entity entity
+     * @return true if inserted successfully
+     */
+    boolean insert(T entity);
 
-    void update(T entity);
+    /**
+     * Updates entity in database
+     * @param entity entity
+     * @return true if updated successfully
+     */
+    boolean update(T entity);
 
-    void delete(T entity);
+    /**
+     * Deletes entity from database
+     * @param entity entity
+     * @return true if deleted successfully
+     */
+    boolean delete(T entity);
 
     /**
      * Searches through database for entity with given id

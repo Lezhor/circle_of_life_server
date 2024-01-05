@@ -31,17 +31,17 @@ class LogDaoImpl implements LogDao {
     // TODO: 05.01.2024 implement all db methods
 
     @Override
-    public void insert(DBLog<?> log) {
-
+    public boolean insert(DBLog<?> log) {
+        return false;
     }
 
     @Override
-    public void update(DBLog<?> log) {
-
+    public boolean update(DBLog<?> log) {
+        return false;
     }
 
     @Override
-    public void delete(DBLog<?> log) {
-
+    public boolean delete(DBLog<?> log) {
+        return false;
     }
 }

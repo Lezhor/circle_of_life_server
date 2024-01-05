@@ -4,10 +4,10 @@ import de.htw_berlin.engines.models.DBLog;
 
 public interface LogDao {
 
-    void insert(DBLog<?> log);
+    boolean insert(DBLog<?> log);
 
-    void update(DBLog<?> log);
+    boolean update(DBLog<?> log);
 
-    void delete(DBLog<?> log);
+    boolean delete(DBLog<?> log);
 
 }

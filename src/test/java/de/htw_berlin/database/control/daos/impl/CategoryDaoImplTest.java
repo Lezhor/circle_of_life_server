@@ -5,8 +5,6 @@ import de.htw_berlin.database.control.DatabaseController;
 import de.htw_berlin.database.models.Category;
 import de.htw_berlin.database.models.User;
 import de.htw_berlin.logging.Log;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.naming.OperationNotSupportedException;
@@ -47,7 +45,7 @@ public class CategoryDaoImplTest {
         setUp();
         assertTrue(db.exists(user));
         assertFalse(db.exists(category));
-        db.insert(category);
+        assertTrue(db.insert(category));
         assertTrue(db.exists(category));
         tearDown();
     }
@@ -59,6 +57,6 @@ public class CategoryDaoImplTest {
         assertDoesNotThrow(() -> db.update(null));
         assertDoesNotThrow(() -> db.delete(null));
         assertDoesNotThrow(() -> db.exists(null));
-        assertDoesNotThrow(() -> db.getById(UUID.randomUUID(), null));
+        assertDoesNotThrow(() -> db.getById(null, null));
     }
 }
