@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.UUID;
 
 class UserDaoImpl implements UserDao {
-    private static final String TAG = "UserDao";
+    private static final String TAG = UserDao.class.getSimpleName();
 
     private static volatile UserDaoImpl instance;
 

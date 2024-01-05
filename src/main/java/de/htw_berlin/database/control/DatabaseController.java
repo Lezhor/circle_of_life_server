@@ -1,7 +1,10 @@
 package de.htw_berlin.database.control;
 
+import de.htw_berlin.database.control.daos.BaseDao;
 import de.htw_berlin.database.models.*;
 import de.htw_berlin.engines.models.DBLog;
+
+import java.util.UUID;
 
 /**
  * Methods for changing data
@@ -10,12 +13,12 @@ public interface DatabaseController {
 
     <E extends Entity> void executeLog(DBLog<E> log);
 
+    <E extends Entity> void insert(E entity);
 
-    // Users
-
-    void insertUser(User user);
-    void updateUser(User user);
-    void deleteUser(User user);
+    <E extends Entity> void update(E entity);
+    <E extends Entity> void delete(E entity);
+    <E extends Entity> E getById(UUID id, Class<E> entityClass);
+    <E extends Entity> boolean exists(E entity);
 
     /**
      * Searches for user with given username in database
@@ -23,34 +26,6 @@ public interface DatabaseController {
      * @return user if found oro null if not found
      */
     User getUserByUsername(String username);
-
-
-    // Categories
-
-    void insertCategory(Category category);
-    void updateCategory(Category category);
-    void deleteCategory(Category category);
-
-
-    // Cycles
-
-    void insertCycle(Cycle cycle);
-    void updateCycle(Cycle cycle);
-    void deleteCycle(Cycle cycle);
-
-
-    // Todos
-
-    void insertTodo(Todo todo);
-    void updateTodo(Todo todo);
-    void deleteTodo(Todo todo);
-
-
-    // Accomplishments
-
-    void insertAccomplishment(Accomplishment accomplishment);
-    void updateAccomplishment(Accomplishment accomplishment);
-    void deleteAccomplishment(Accomplishment accomplishment);
 
 
     // Logs

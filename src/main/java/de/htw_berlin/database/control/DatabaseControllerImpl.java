@@ -1,9 +1,14 @@
 package de.htw_berlin.database.control;
 
+import de.htw_berlin.database.control.daos.BaseDao;
 import de.htw_berlin.database.models.*;
 import de.htw_berlin.engines.models.DBLog;
+import de.htw_berlin.logging.Log;
+
+import java.util.UUID;
 
 public class DatabaseControllerImpl implements DatabaseController {
+    private static final String TAG = DatabaseController.class.getSimpleName();
 
     private static volatile DatabaseControllerImpl instance;
 
@@ -31,87 +36,67 @@ public class DatabaseControllerImpl implements DatabaseController {
 
     @Override
     public <E extends Entity> void executeLog(DBLog<E> log) {
-        // TODO: 05.01.2024 Get correct Dao for log
+        BaseDao<E> dao = db.getDao(log.getChangedObject());
+        if (dao == null) {
+            Log.w(TAG, "Couldn't find dao for log-type " + log.getChangedObject().getClass().getName());
+        }
     }
 
     @Override
-    public void insertUser(User user) {
-        db.getUserDao().insert(user);
+    public <E extends Entity> void insert(E entity) {
+        BaseDao<E> dao = db.getDao(entity);
+        if (dao == null) {
+            Log.w(TAG, "Couldn't find dao for entity " + entity);
+        } else {
+            dao.insert(entity);
+        }
     }
 
     @Override
-    public void updateUser(User user) {
-        db.getUserDao().update(user);
+    public <E extends Entity> void update(E entity) {
+        BaseDao<E> dao = db.getDao(entity);
+        if (dao == null) {
+            Log.w(TAG, "Couldn't find dao for entity " + entity);
+        } else {
+            dao.update(entity);
+        }
     }
 
     @Override
-    public void deleteUser(User user) {
-        db.getUserDao().delete(user);
+    public <E extends Entity> void delete(E entity) {
+        BaseDao<E> dao = db.getDao(entity);
+        if (dao == null) {
+            Log.w(TAG, "Couldn't find dao for entity " + entity);
+        } else {
+            dao.delete(entity);
+        }
+    }
+
+    @Override
+    public <E extends Entity> E getById(UUID id, Class<E> entityClass) {
+        BaseDao<E> dao = db.getDao(entityClass);
+        if (dao == null) {
+            Log.w(TAG, "Couldn't find dao for entity-class " + entityClass.getName());
+            return null;
+        } else {
+            return dao.getById(id);
+        }
+    }
+
+    @Override
+    public <E extends Entity> boolean exists(E entity) {
+        BaseDao<E> dao = db.getDao(entity);
+        if (dao == null) {
+            Log.w(TAG, "Couldn't find dao for entity " + entity);
+            return false;
+        } else {
+            return dao.exists(entity);
+        }
     }
 
     @Override
     public User getUserByUsername(String username) {
         return db.getUserDao().getByUsername(username);
-    }
-
-    @Override
-    public void insertCategory(Category category) {
-        db.getCategoryDao().insert(category);
-    }
-
-    @Override
-    public void updateCategory(Category category) {
-        db.getCategoryDao().update(category);
-    }
-
-    @Override
-    public void deleteCategory(Category category) {
-        db.getCategoryDao().delete(category);
-    }
-
-    @Override
-    public void insertCycle(Cycle cycle) {
-        db.getCycleDao().insert(cycle);
-    }
-
-    @Override
-    public void updateCycle(Cycle cycle) {
-        db.getCycleDao().update(cycle);
-    }
-
-    @Override
-    public void deleteCycle(Cycle cycle) {
-        db.getCycleDao().delete(cycle);
-    }
-
-    @Override
-    public void insertTodo(Todo todo) {
-        db.getTodoDao().insert(todo);
-    }
-
-    @Override
-    public void updateTodo(Todo todo) {
-        db.getTodoDao().update(todo);
-    }
-
-    @Override
-    public void deleteTodo(Todo todo) {
-        db.getTodoDao().delete(todo);
-    }
-
-    @Override
-    public void insertAccomplishment(Accomplishment accomplishment) {
-        db.getAccomplishmentDao().insert(accomplishment);
-    }
-
-    @Override
-    public void updateAccomplishment(Accomplishment accomplishment) {
-        db.getAccomplishmentDao().update(accomplishment);
-    }
-
-    @Override
-    public void deleteAccomplishment(Accomplishment accomplishment) {
-        db.getAccomplishmentDao().delete(accomplishment);
     }
 
     @Override
