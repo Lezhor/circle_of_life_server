@@ -35,7 +35,7 @@ public class SyncProtocolEngine implements Protocol {
             // Step 1:
             SendAuthPDU sendAuthPDU = serializer.deserialize(SendAuthPDU.class);
             Log.d(TAG, client + "Received sendAuthPDU: " + sendAuthPDU.getUser());
-            boolean authSuccessful = App.getAuthentication().isAuthenticated(sendAuthPDU.getUser());
+            boolean authSuccessful = App.getAuthenticationEngine().isAuthenticated(sendAuthPDU.getUser());
             Log.d(TAG, client + "authenticationSuccessful: " + authSuccessful);
 
             // Step 2:

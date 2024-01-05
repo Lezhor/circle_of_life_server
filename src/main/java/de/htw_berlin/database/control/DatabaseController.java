@@ -4,7 +4,7 @@ import de.htw_berlin.database.models.*;
 import de.htw_berlin.engines.models.DBLog;
 
 /**
- * Methods for changes data
+ * Methods for changing data
  */
 public interface DatabaseController {
 

@@ -1,7 +1,7 @@
 package de.htw_berlin;
 
+import de.htw_berlin.application.App;
 import de.htw_berlin.communication.Server;
-import de.htw_berlin.database.control.AppDatabase;
 import de.htw_berlin.database.jdbc.JDBCController;
 import de.htw_berlin.database.models.User;
 import de.htw_berlin.database.models.type_converters.LocalDateTimeConverter;
@@ -51,10 +51,10 @@ public class Main {
         user.setTimeOfCreation(LocalDateTime.now());
         user.setUsername("john_doe");
 
-        AppDatabase.getUserDao().update(user);
+        App.getDatabaseController().updateUser(user);
         //AppDatabase.getUserDao().insert(new User(UUID.randomUUID(), "jane_doe", "another_password", LocalDateTime.now()));
 
-        User user2 = AppDatabase.getUserDao().getByUsername("jane_doe");
+        User user2 = App.getDatabaseController().getUserByUsername("jane_doe");
         Log.d(TAG, "Retrieved user: " + user2);
 
         //AppDatabase.getUserDao().delete(user);
