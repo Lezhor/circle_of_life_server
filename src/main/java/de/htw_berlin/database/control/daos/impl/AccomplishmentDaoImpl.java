@@ -37,8 +37,6 @@ class AccomplishmentDaoImpl implements AccomplishmentDao {
     private AccomplishmentDaoImpl() {
     }
 
-    // TODO: 05.01.2024 implement db methods
-
     @Override
     public boolean insert(Accomplishment accomplishment) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
