@@ -1,6 +1,7 @@
 package de.htw_berlin.communication.pdus.sync;
 
 import de.htw_berlin.communication.pdus.PDU;
+import de.htw_berlin.database.models.type_converters.LocalDateTimeConverter;
 import de.htw_berlin.engines.models.DBLog;
 import de.htw_berlin.engines.models.LogSerializer;
 
@@ -9,6 +10,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 
 /**
  * Used to send logs to server.<br>
@@ -18,12 +20,14 @@ public class SendLogsPDU implements PDU {
 
     public final static int ID = 4;
 
+    private LocalDateTime lastSyncDate;
     private DBLog<?>[] logArray;
 
     /**
      * Creates a pdu with logs - Note: There is no way to edit the logs later
      */
-    public SendLogsPDU(DBLog<?>... logs) {
+    public SendLogsPDU(LocalDateTime lastSyncDate, DBLog<?>... logs) {
+        this.lastSyncDate = lastSyncDate;
         this.logArray = logs;
     }
 
@@ -36,6 +40,7 @@ public class SendLogsPDU implements PDU {
     public void serialize(OutputStream os) throws IOException {
         DataOutputStream dos = new DataOutputStream(os);
         dos.writeInt(getID());
+        dos.writeUTF(LocalDateTimeConverter.localDateTimeToString(lastSyncDate));
         dos.writeInt(logArray.length);
         LogSerializer logSerializer = LogSerializer.getInstance();
         for (DBLog<?> log : logArray) {
@@ -46,6 +51,7 @@ public class SendLogsPDU implements PDU {
     @Override
     public void deserialize(InputStream is) throws IOException {
         DataInputStream dis = new DataInputStream(is);
+        lastSyncDate = LocalDateTimeConverter.localDateTimeFromString(dis.readUTF());
         int logCount = dis.readInt();
         DBLog<?>[] logs = new DBLog[logCount];
         LogSerializer logSerializer = LogSerializer.getInstance();
@@ -61,7 +67,7 @@ public class SendLogsPDU implements PDU {
      * @return deserialized PDU
      */
     public static SendLogsPDU fromInputStream(InputStream is) throws IOException {
-        SendLogsPDU pdu = new SendLogsPDU();
+        SendLogsPDU pdu = new SendLogsPDU(LocalDateTime.of(0, 1, 1, 0, 0));
         pdu.deserialize(is);
         return pdu;
     }
@@ -72,5 +78,9 @@ public class SendLogsPDU implements PDU {
      */
     public DBLog<?>[] getLogs() {
         return logArray;
+    }
+
+    public LocalDateTime getLastSyncDate() {
+        return lastSyncDate;
     }
 }

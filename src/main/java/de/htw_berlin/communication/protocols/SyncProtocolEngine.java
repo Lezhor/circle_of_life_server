@@ -48,14 +48,12 @@ public class SyncProtocolEngine implements Protocol {
 
             // Step 3:
             SendLogsPDU logsPDU = serializer.deserialize(SendLogsPDU.class);
-            DBLog<?>[] logs = logsPDU.getLogs();
-            Log.d(TAG, client + "received " + logs.length + " logs from client");
-            // TODO: 04.01.2024 Sync DB with logs
+            Log.d(TAG, client + "received " + logsPDU.getLogs().length + " logs from client");
+
 
             // Step 4:
-            DBLog<?>[] instructions = new DBLog[]{}; // TODO: 04.01.2024 Get instructions
-            Log.d(TAG, client + "sending " + instructions.length + " instructions to client");
-            SendLogsPDU sendLogsPDU = new SendLogsPDU(instructions);
+            SendLogsPDU sendLogsPDU = App.getSyncEngine().sync(sendAuthPDU.getUser(), logsPDU);
+            Log.d(TAG, client + "sending " + sendLogsPDU.getLogs().length + " instructions to client");
             serializer.serialize(sendLogsPDU);
 
             // Step 5:

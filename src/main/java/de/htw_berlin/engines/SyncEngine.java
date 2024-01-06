@@ -1,5 +1,7 @@
 package de.htw_berlin.engines;
 
+import de.htw_berlin.communication.pdus.sync.SendLogsPDU;
+import de.htw_berlin.database.models.User;
 import de.htw_berlin.engines.models.DBLog;
 
 import java.time.LocalDateTime;
@@ -13,10 +15,9 @@ public interface SyncEngine {
     /**
      * Synchronizing takes in an array of logs with changes to be applied to database,
      * as well as lastSyncDate and returns a list of logs which the client has to execute in order to update its own db to the newest state
-     * @param lastSync lastSyncDate
-     * @param logs logArray
-     * @return list of logs the client needs to execute
+     * @param clientLogs the incoming pdu whith last sync date as well as the logs
+     * @return SendLogsPDU with all instructions for the client as well as a new lastSyncDate
      */
-    List<DBLog<?>> sync(LocalDateTime lastSync, DBLog<?>... logs);
+    SendLogsPDU sync(User client, SendLogsPDU clientLogs);
 
 }
