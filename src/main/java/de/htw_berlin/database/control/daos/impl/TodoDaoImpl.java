@@ -2,9 +2,7 @@ package de.htw_berlin.database.control.daos.impl;
 
 import de.htw_berlin.database.control.daos.TodoDao;
 import de.htw_berlin.database.jdbc.JDBCController;
-import de.htw_berlin.database.models.Cycle;
 import de.htw_berlin.database.models.Todo;
-import de.htw_berlin.database.models.type_converters.CycleFrequencyConverter;
 import de.htw_berlin.database.models.type_converters.LocalDateTimeConverter;
 import de.htw_berlin.database.models.type_converters.UUIDConverter;
 
@@ -37,8 +35,6 @@ class TodoDaoImpl implements TodoDao {
      */
     private TodoDaoImpl() {
     }
-
-    // TODO: 05.01.2024 Implement db methods
 
     @Override
     public boolean insert(Todo todo) {
