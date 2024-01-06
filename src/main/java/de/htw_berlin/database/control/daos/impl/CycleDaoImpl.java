@@ -37,7 +37,7 @@ class CycleDaoImpl implements CycleDao {
     }
 
     @Override
-    public boolean insert(Cycle cycle) {
+    public boolean insertQuery(Cycle cycle) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("INSERT INTO cycles (id, user_id, cycle_name, category_id, productiveness, frequency, archived) VALUES (" +
@@ -56,7 +56,7 @@ class CycleDaoImpl implements CycleDao {
     }
 
     @Override
-    public boolean update(Cycle cycle) {
+    public boolean updateQuery(Cycle cycle) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("UPDATE cycles SET " +
@@ -74,7 +74,7 @@ class CycleDaoImpl implements CycleDao {
     }
 
     @Override
-    public boolean delete(Cycle cycle) {
+    public boolean deleteQuery(Cycle cycle) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("DELETE FROM cycles WHERE id = '" + UUIDConverter.uuidToString(cycle.getId()) + "'");

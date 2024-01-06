@@ -38,7 +38,7 @@ class AccomplishmentDaoImpl implements AccomplishmentDao {
     }
 
     @Override
-    public boolean insert(Accomplishment accomplishment) {
+    public boolean insertQuery(Accomplishment accomplishment) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("INSERT INTO accomplishments (id, user_id, cycle_id, todo_id, name, description, productiveness, date, timestamp, duration) VALUES (" +
@@ -60,7 +60,7 @@ class AccomplishmentDaoImpl implements AccomplishmentDao {
     }
 
     @Override
-    public boolean update(Accomplishment accomplishment) {
+    public boolean updateQuery(Accomplishment accomplishment) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("UPDATE accomplishments SET " +
@@ -81,7 +81,7 @@ class AccomplishmentDaoImpl implements AccomplishmentDao {
     }
 
     @Override
-    public boolean delete(Accomplishment accomplishment) {
+    public boolean deleteQuery(Accomplishment accomplishment) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("DELETE FROM accomplishments " +

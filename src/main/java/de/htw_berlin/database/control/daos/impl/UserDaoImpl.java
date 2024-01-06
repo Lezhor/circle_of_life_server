@@ -39,7 +39,7 @@ class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean insert(User user) {
+    public boolean insertQuery(User user) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("INSERT INTO users (user_id, username, password, creation_time) VALUES (" +
@@ -55,7 +55,7 @@ class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean update(User user) {
+    public boolean updateQuery(User user) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("UPDATE users SET " +
@@ -71,7 +71,7 @@ class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean delete(User user) {
+    public boolean deleteQuery(User user) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("DELETE FROM users " +
