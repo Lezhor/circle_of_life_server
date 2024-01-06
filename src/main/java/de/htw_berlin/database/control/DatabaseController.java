@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public interface DatabaseController {
 
-    <E extends Entity> void executeLog(DBLog<E> log);
+    <E extends Entity> boolean executeLog(DBLog<E> log);
 
     <E extends Entity> boolean insert(E entity);
 

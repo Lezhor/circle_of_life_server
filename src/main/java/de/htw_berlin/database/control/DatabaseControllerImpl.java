@@ -39,10 +39,13 @@ public class DatabaseControllerImpl implements DatabaseController {
     }
 
     @Override
-    public <E extends Entity> void executeLog(DBLog<E> log) {
+    public <E extends Entity> boolean executeLog(DBLog<E> log) {
         BaseDao<E> dao = db.getDao(log.getChangedObject());
         if (dao == null) {
             Log.w(TAG, "Couldn't find dao for log-type " + log.getChangedObject().getClass().getName());
+            return false;
+        } else {
+            return dao.executeLog(log);
         }
     }
 

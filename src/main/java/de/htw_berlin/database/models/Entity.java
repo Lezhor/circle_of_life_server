@@ -1,6 +1,5 @@
 package de.htw_berlin.database.models;
 
-import de.htw_berlin.database.models.additional.Copyable;
 import de.htw_berlin.database.models.additional.HasId;
 import de.htw_berlin.database.models.additional.HasUserId;
 
