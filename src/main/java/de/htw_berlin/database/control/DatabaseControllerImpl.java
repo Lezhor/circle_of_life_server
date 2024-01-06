@@ -6,6 +6,9 @@ import de.htw_berlin.engines.models.DBLog;
 import de.htw_berlin.logging.Log;
 
 import javax.naming.OperationNotSupportedException;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 public class DatabaseControllerImpl implements DatabaseController {
@@ -133,5 +136,10 @@ public class DatabaseControllerImpl implements DatabaseController {
     @Override
     public void deleteLog(DBLog<?> log) {
         db.getLogDao().delete(log);
+    }
+
+    @Override
+    public List<DBLog<?>> getLogsBetweenTimestamps(User client, LocalDateTime timestamp1, LocalDateTime timestamp2) {
+        return db.getLogDao().getLogsBetweenTimestamps(client, timestamp1, timestamp2);
     }
 }

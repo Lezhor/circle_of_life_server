@@ -4,6 +4,8 @@ import de.htw_berlin.database.models.*;
 import de.htw_berlin.engines.models.DBLog;
 
 import javax.naming.OperationNotSupportedException;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -110,5 +112,5 @@ public interface DatabaseController {
     void deleteLog(DBLog<?> log);
 
 
-
+    List<DBLog<?>> getLogsBetweenTimestamps(User client, LocalDateTime timestamp1, LocalDateTime timestamp2);
 }
