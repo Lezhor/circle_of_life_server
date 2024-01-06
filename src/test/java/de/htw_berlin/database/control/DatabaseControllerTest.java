@@ -115,7 +115,7 @@ public class DatabaseControllerTest {
     }
 
     @Test
-    public void testUpdateToItself() {
+    public void testUpdate() {
         setUp();
 
         assertTrue(db.update(user));
@@ -131,6 +131,34 @@ public class DatabaseControllerTest {
         assertTrue(db.update(cycle));
         assertTrue(db.update(todo));
         assertTrue(db.update(accomplishment));
+
+        tearDown();
+    }
+
+    @Test
+    public void testDelete() {
+        setUp();
+
+        // Deleting non existent entities
+        assertFalse(db.delete(category));
+        assertFalse(db.delete(cycle));
+        assertFalse(db.delete(todo));
+        assertFalse(db.delete(accomplishment));
+
+        // inserting everything
+        assertTrue(db.insertAll(category, cycle, todo, accomplishment));
+
+        // Can't be deleted because of foreign key constraints pointing to them:
+        assertFalse(db.delete(user));
+        assertFalse(db.delete(category));
+        assertFalse(db.delete(cycle));
+
+        // Can be deleted:
+        assertTrue(db.delete(todo));
+        assertTrue(db.delete(accomplishment));
+        assertTrue(db.delete(cycle));
+        assertTrue(db.delete(category));
+        assertTrue(db.delete(user));
 
         tearDown();
     }
