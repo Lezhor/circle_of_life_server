@@ -2,7 +2,6 @@ package de.htw_berlin.communication.protocols;
 
 import de.htw_berlin.application.App;
 import de.htw_berlin.communication.pdus.sync.*;
-import de.htw_berlin.engines.models.DBLog;
 import de.htw_berlin.logging.Log;
 
 import java.io.IOException;

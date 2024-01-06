@@ -2,10 +2,6 @@ package de.htw_berlin.engines;
 
 import de.htw_berlin.communication.pdus.sync.SendLogsPDU;
 import de.htw_berlin.database.models.User;
-import de.htw_berlin.engines.models.DBLog;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Offers method for synchronizing.
