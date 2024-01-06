@@ -17,16 +17,16 @@ public interface BaseDao<T extends Entity> {
      * @param entity entity
      * @return true if inserted successfully
      */
-    boolean insertQuery(T entity);
+    boolean insertWithoutCheckingExistence(T entity);
 
     /**
      * Inserts entity into database
      * @param entity entity
      * @return true if inserted successfully
-     * @see #insertQuery(Entity)
+     * @see #insertWithoutCheckingExistence(Entity)
      */
     default boolean insert(T entity) {
-        return insertQuery(entity);
+        return insertWithoutCheckingExistence(entity);
     }
 
     /**
@@ -34,7 +34,7 @@ public interface BaseDao<T extends Entity> {
      * @param entity entity
      * @return true if updated successfully
      */
-    boolean updateQuery(T entity);
+    boolean updateWithoutCheckingExistence(T entity);
 
     /**
      * Returns true if entity exists in database and was successfully updated
@@ -43,7 +43,7 @@ public interface BaseDao<T extends Entity> {
      */
     default boolean update(T entity) {
         if (exists(entity)) {
-            return updateQuery(entity);
+            return updateWithoutCheckingExistence(entity);
         } else {
             return false;
         }
@@ -54,7 +54,7 @@ public interface BaseDao<T extends Entity> {
      * @param entity entity
      * @return true if deleted successfully
      */
-    boolean deleteQuery(T entity);
+    boolean deleteWithoutCheckingExistence(T entity);
 
     /**
      * Deletes entity from database, if there
@@ -63,7 +63,7 @@ public interface BaseDao<T extends Entity> {
      */
     default boolean delete(T entity) {
         if (exists(entity)) {
-            return deleteQuery(entity);
+            return deleteWithoutCheckingExistence(entity);
         } else {
             return false;
         }

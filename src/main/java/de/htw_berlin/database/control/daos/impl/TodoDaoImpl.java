@@ -37,7 +37,7 @@ class TodoDaoImpl implements TodoDao {
     }
 
     @Override
-    public boolean insertQuery(Todo todo) {
+    public boolean insertWithoutCheckingExistence(Todo todo) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("INSERT INTO todos (id, user_id, todo_name, category_id, productiveness, done, due_date) VALUES (" +
@@ -56,7 +56,7 @@ class TodoDaoImpl implements TodoDao {
     }
 
     @Override
-    public boolean updateQuery(Todo todo) {
+    public boolean updateWithoutCheckingExistence(Todo todo) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("UPDATE todos SET " +
@@ -74,7 +74,7 @@ class TodoDaoImpl implements TodoDao {
     }
 
     @Override
-    public boolean deleteQuery(Todo todo) {
+    public boolean deleteWithoutCheckingExistence(Todo todo) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("DELETE FROM todos WHERE id = '" + UUIDConverter.uuidToString(todo.getId()) + "'");

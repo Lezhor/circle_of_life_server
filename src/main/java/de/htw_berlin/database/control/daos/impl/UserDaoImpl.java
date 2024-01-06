@@ -39,7 +39,7 @@ class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean insertQuery(User user) {
+    public boolean insertWithoutCheckingExistence(User user) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("INSERT INTO users (user_id, username, password, creation_time) VALUES (" +
@@ -55,7 +55,7 @@ class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean updateQuery(User user) {
+    public boolean updateWithoutCheckingExistence(User user) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("UPDATE users SET " +
@@ -71,7 +71,7 @@ class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean deleteQuery(User user) {
+    public boolean deleteWithoutCheckingExistence(User user) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("DELETE FROM users " +

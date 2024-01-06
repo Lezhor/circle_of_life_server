@@ -37,7 +37,7 @@ class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public boolean insertQuery(Category category) {
+    public boolean insertWithoutCheckingExistence(Category category) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("INSERT INTO categories (id, user_id, category_name, parent_id) VALUES (" +
@@ -53,7 +53,7 @@ class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public boolean updateQuery(Category category) {
+    public boolean updateWithoutCheckingExistence(Category category) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("UPDATE categories SET " +
@@ -68,7 +68,7 @@ class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public boolean deleteQuery(Category category) {
+    public boolean deleteWithoutCheckingExistence(Category category) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("DELETE FROM categories WHERE id = '" + UUIDConverter.uuidToString(category.getId()) + "'");
