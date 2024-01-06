@@ -40,7 +40,7 @@ class UserDaoImpl implements UserDao {
 
     @Override
     public boolean insert(User user) {
-        return JDBCController.executeInDB(con -> {
+        return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("INSERT INTO users (user_id, username, password, creation_time) VALUES (" +
                         "'" + UUIDConverter.uuidToString(user.getUserID()) + "', " +
@@ -51,12 +51,12 @@ class UserDaoImpl implements UserDao {
                 return false;
             }
             return true;
-        });
+        }));
     }
 
     @Override
     public boolean update(User user) {
-        return JDBCController.executeInDB(con -> {
+        return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("UPDATE users SET " +
                         "username = '" + user.getUsername() + "', " +
@@ -67,12 +67,12 @@ class UserDaoImpl implements UserDao {
                 return false;
             }
             return true;
-        });
+        }));
     }
 
     @Override
     public boolean delete(User user) {
-        return JDBCController.executeInDB(con -> {
+        return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("DELETE FROM users " +
                         "WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
@@ -81,7 +81,7 @@ class UserDaoImpl implements UserDao {
                 return false;
             }
             return true;
-        });
+        }));
     }
 
     @Override
@@ -131,7 +131,7 @@ class UserDaoImpl implements UserDao {
 
     @Override
     public boolean clearUser(User user) {
-        return JDBCController.executeInDB(con -> {
+        return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("DELETE FROM logs WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
                 statement.execute("DELETE FROM accomplishments WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
@@ -144,6 +144,6 @@ class UserDaoImpl implements UserDao {
                 return false;
             }
             return true;
-        });
+        }));
     }
 }
