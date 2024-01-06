@@ -38,7 +38,7 @@ class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public boolean insert(Category category) {
-        return JDBCController.executeInDB(con -> {
+        return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("INSERT INTO categories (id, user_id, category_name, parent_id) VALUES (" +
                         "'" + UUIDConverter.uuidToString(category.getId()) + "', " +
@@ -49,12 +49,12 @@ class CategoryDaoImpl implements CategoryDao {
             } catch (SQLException e) {
                 return false;
             }
-        });
+        }));
     }
 
     @Override
     public boolean update(Category category) {
-        return JDBCController.executeInDB(con -> {
+        return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("UPDATE categories SET " +
                         "category_name = '" + category.getName() + "', " +
@@ -64,19 +64,19 @@ class CategoryDaoImpl implements CategoryDao {
             } catch (SQLException e) {
                 return false;
             }
-        });
+        }));
     }
 
     @Override
     public boolean delete(Category category) {
-        return JDBCController.executeInDB(con -> {
+        return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("DELETE FROM categories WHERE id = '" + UUIDConverter.uuidToString(category.getId()) + "'");
                 return true;
             } catch (SQLException e) {
                 return false;
             }
-        });
+        }));
     }
 
     @Override

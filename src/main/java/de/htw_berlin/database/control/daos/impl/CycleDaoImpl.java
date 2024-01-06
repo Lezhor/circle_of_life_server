@@ -5,7 +5,6 @@ import de.htw_berlin.database.jdbc.JDBCController;
 import de.htw_berlin.database.models.Cycle;
 import de.htw_berlin.database.models.type_converters.CycleFrequencyConverter;
 import de.htw_berlin.database.models.type_converters.UUIDConverter;
-import de.htw_berlin.logging.Log;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +12,6 @@ import java.sql.Statement;
 import java.util.UUID;
 
 class CycleDaoImpl implements CycleDao {
-    private static final String TAG = CycleDao.class.getSimpleName();
 
     private static volatile CycleDaoImpl instance;
 
@@ -40,50 +38,51 @@ class CycleDaoImpl implements CycleDao {
 
     @Override
     public boolean insert(Cycle cycle) {
-        return JDBCController.executeInDB(con -> {
+        return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("INSERT INTO cycles (id, user_id, cycle_name, category_id, productiveness, frequency, archived) VALUES (" +
                         "'" + UUIDConverter.uuidToString(cycle.getId()) + "', " +
                         "'" + UUIDConverter.uuidToString(cycle.getUserID()) + "', " +
                         "'" + cycle.getName() + "', " +
                         "'" + UUIDConverter.uuidToString(cycle.getCategoryID()) + "', " +
+                        cycle.getProductiveness() + ", " +
                         "'" + CycleFrequencyConverter.frequecyToString(cycle.getFrequency()) + "', "
                         + cycle.isArchived() + ")");
                 return true;
             } catch (SQLException e) {
                 return false;
             }
-        });
+        }));
     }
 
     @Override
     public boolean update(Cycle cycle) {
-        return JDBCController.executeInDB(con -> {
+        return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("UPDATE cycles SET " +
                         "cycle_name = '" + cycle.getName() + "', " +
                         "category_id = '" + UUIDConverter.uuidToString(cycle.getCategoryID()) + "', " +
-                        "productiveness = '" + CycleFrequencyConverter.frequecyToString(cycle.getFrequency()) + "', " +
+                        "productiveness = " + cycle.getProductiveness() + ", " +
+                        "frequency = '" + CycleFrequencyConverter.frequecyToString(cycle.getFrequency()) + "', " +
                         "archived = " + cycle.isArchived() + " " +
                         "WHERE id = '" + UUIDConverter.uuidToString(cycle.getId()) + "'");
                 return true;
             } catch (SQLException e) {
                 return false;
             }
-        });
+        }));
     }
 
     @Override
     public boolean delete(Cycle cycle) {
-        return JDBCController.executeInDB(con -> {
+        return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
                 statement.execute("DELETE FROM cycles WHERE id = '" + UUIDConverter.uuidToString(cycle.getId()) + "'");
-                Log.d(TAG, "Deleted cycle: " + cycle);
                 return true;
             } catch (SQLException e) {
                 return false;
             }
-        });
+        }));
     }
 
     @Override
