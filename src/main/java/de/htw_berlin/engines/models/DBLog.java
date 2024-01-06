@@ -10,7 +10,7 @@ import de.htw_berlin.database.models.type_converters.UUIDConverter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class DBLog<E extends Entity> {
+public class DBLog<E extends Entity> implements Comparable<DBLog<?>> {
     final static String SEPARATOR = "dkjLdj4wlkK6lSD3OP";
 
     private final UUID id;
@@ -82,7 +82,7 @@ public class DBLog<E extends Entity> {
      * @param changeMode    changeMode
      * @param timestamp     timestamp
      */
-    DBLog(UUID id, UUID userID, E changedObject, ChangeMode changeMode, LocalDateTime timestamp) {
+    public DBLog(UUID id, UUID userID, E changedObject, ChangeMode changeMode, LocalDateTime timestamp) {
         this.id = id;
         this.userID = userID;
         this.changedObject = changedObject;
@@ -176,6 +176,11 @@ public class DBLog<E extends Entity> {
         return false;
     }
 
+    @Override
+    public int compareTo(DBLog<?> that) {
+        return this.timestamp.compareTo(that.timestamp);
+    }
+
     public enum ChangeMode {
         INSERT, UPDATE, DELETE;
 
@@ -189,5 +194,8 @@ public class DBLog<E extends Entity> {
 
     }
 
-
+    @Override
+    public String toString() {
+        return "DBLog { " + changedObject.toString() + ", " + changeMode.name() + ", " + LocalDateTimeConverter.localDateTimeToString(timestamp) + " }";
+    }
 }

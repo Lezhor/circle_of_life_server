@@ -5,6 +5,7 @@ import de.htw_berlin.engines.models.DBLog;
 
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -108,6 +109,14 @@ public interface DatabaseController {
     // Logs
 
     void insertLog(DBLog<?> log);
+
+    /**
+     * Inserts multiple logs into database
+     * @param logs logs
+     */
+    default void insertAll(DBLog<?>... logs) {
+        Arrays.stream(logs).forEach(this::insertLog);
+    }
     void updateLog(DBLog<?> log);
     void deleteLog(DBLog<?> log);
 

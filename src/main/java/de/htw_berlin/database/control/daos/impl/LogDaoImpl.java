@@ -7,7 +7,6 @@ import de.htw_berlin.database.models.type_converters.DBLogConverter;
 import de.htw_berlin.database.models.type_converters.LocalDateTimeConverter;
 import de.htw_berlin.database.models.type_converters.UUIDConverter;
 import de.htw_berlin.engines.models.DBLog;
-import de.htw_berlin.engines.models.DBLogQueue;
 import de.htw_berlin.logging.Log;
 
 import java.sql.ResultSet;
@@ -16,7 +15,6 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 class LogDaoImpl implements LogDao {
     private static final String TAG = LogDao.class.getSimpleName();
@@ -87,7 +85,31 @@ class LogDaoImpl implements LogDao {
                 ResultSet rs = statement.executeQuery("SELECT * FROM logs WHERE " +
                         "user_id = '" + UUIDConverter.uuidToString(client.getUserID()) + "' AND " +
                         "timestamp >= '" + LocalDateTimeConverter.localDateTimeToString(timestamp1) + "' AND " +
-                        "timestamp < '" + LocalDateTimeConverter.localDateTimeToString(timestamp2) + "'");
+                        "timestamp < '" + LocalDateTimeConverter.localDateTimeToString(timestamp2) + "' " +
+                        "ORDER BY timestamp");
+                while (rs.next()) {
+                    logs.add(DBLogConverter.stringToDBLog(rs.getString("content")));
+                }
+                return logs;
+            } catch (SQLException e) {
+                return null;
+            }
+        });
+    }
+
+    /**
+     * returns all logs of a user
+     * @param user user
+     * @return logs
+     */
+    List<DBLog<?>> getLogs(User user) {
+        return JDBCController.executeInDB(con -> {
+            try (Statement statement = con.createStatement()) {
+                List<DBLog<?>> logs = new LinkedList<>();
+
+                ResultSet rs = statement.executeQuery("SELECT * FROM logs WHERE " +
+                        "user_id = '" + UUIDConverter.uuidToString(user.getUserID()) + "' " +
+                        "ORDER BY timestamp");
                 while (rs.next()) {
                     logs.add(DBLogConverter.stringToDBLog(rs.getString("content")));
                 }
