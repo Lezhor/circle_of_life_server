@@ -56,6 +56,17 @@ public class DatabaseControllerTest {
     }
 
     @Test
+    public void testAllMethods() {
+        setUp();
+        assertTrue(db.existAll());
+        assertTrue(db.existAll(user));
+        assertFalse(db.existAll(user, category));
+        assertTrue(db.insertAll(category));
+        assertFalse(db.insertAll(cycle, category));
+        tearDown();
+    }
+
+    @Test
     public void testInsertUserWithSameUsernameShouldFail() {
         setUp();
         Log.d(TAG, "Testing insert user with same username should fail");
@@ -100,6 +111,47 @@ public class DatabaseControllerTest {
         db.insert(cycle);
         assertInsertWorks(accomplishment);
         assertTrue(accomplishment.equalsAllParams(db.getById(accomplishment.getId(), accomplishment.getClass())));
+        tearDown();
+    }
+
+    @Test
+    public void testUpdateToItself() {
+        setUp();
+
+        assertTrue(db.update(user));
+
+        assertFalse(db.update(category));
+        assertFalse(db.update(cycle));
+        assertFalse(db.update(todo));
+        assertFalse(db.update(accomplishment));
+
+        assertTrue(db.insertAll(category, cycle, todo, accomplishment));
+
+        assertTrue(db.update(category));
+        assertTrue(db.update(cycle));
+        assertTrue(db.update(todo));
+        assertTrue(db.update(accomplishment));
+
+        tearDown();
+    }
+
+    @Test
+    public void testUpdateCategory() {
+        setUp();
+        Log.d(TAG, "Test Update Category");
+        db.insert(category);
+        Category category2 = category.copy();
+        category2.setName("This is a new name for the category");
+
+        Category categoryInDB = db.getById(category2.getId(), Category.class);
+        assertEquals(category.getName(), categoryInDB.getName());
+
+        assertTrue(db.update(category2));
+        categoryInDB = db.getById(category2.getId(), Category.class);
+        assertEquals(category2, categoryInDB);
+        assertEquals(category, categoryInDB);
+        assertTrue(category2.equalsAllParams(categoryInDB));
+        assertNotEquals(category.getName(), categoryInDB.getName());
         tearDown();
     }
 

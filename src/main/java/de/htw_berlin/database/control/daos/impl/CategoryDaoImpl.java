@@ -58,7 +58,7 @@ class CategoryDaoImpl implements CategoryDao {
             try (Statement statement = con.createStatement()) {
                 statement.execute(("UPDATE categories SET " +
                         "category_name = '" + category.getName() + "', " +
-                        "parent_id = '" + UUIDConverter.uuidToString(category.getParentID()) + "', " +
+                        "parent_id = '" + UUIDConverter.uuidToString(category.getParentID()) + "' " +
                         "WHERE id = '" + UUIDConverter.uuidToString(category.getId()) + "'").replaceAll("'null'", "NULL"));
                 return true;
             } catch (SQLException e) {
