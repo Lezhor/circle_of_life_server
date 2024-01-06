@@ -17,7 +17,7 @@ public class LocalDateTimeConverter {
      * @see LocalDateTime#parse(CharSequence)
      */
     public static LocalDateTime localDateTimeFromString(String str) {
-        if (str == null) {
+        if (str == null || str.equalsIgnoreCase("null")) {
             return null;
         } else {
             return LocalDateTime.parse(str);
@@ -45,7 +45,7 @@ public class LocalDateTimeConverter {
      * @see LocalDate#parse(CharSequence)
      */
     public static LocalDate localDateFromString(String str) {
-        if (str == null) {
+        if (str == null || str.equalsIgnoreCase("null")) {
             return null;
         }
         return LocalDate.parse(str);
@@ -71,7 +71,7 @@ public class LocalDateTimeConverter {
      * @see LocalTime#parse(CharSequence)
      */
     public static LocalTime localTimeFromString(String str) {
-        if (str == null) {
+        if (str == null || str.equalsIgnoreCase("null")) {
             return null;
         }
         return LocalTime.parse(str);
