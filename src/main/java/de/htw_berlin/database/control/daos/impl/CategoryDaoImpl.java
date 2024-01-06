@@ -40,11 +40,11 @@ class CategoryDaoImpl implements CategoryDao {
     public boolean insert(Category category) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
-                statement.execute("INSERT INTO categories (id, user_id, category_name, parent_id) VALUES (" +
+                statement.execute(("INSERT INTO categories (id, user_id, category_name, parent_id) VALUES (" +
                         "'" + UUIDConverter.uuidToString(category.getId()) + "', " +
                         "'" + UUIDConverter.uuidToString(category.getUserID()) + "', " +
                         "'" + category.getName() + "', " +
-                        "'" + UUIDConverter.uuidToString(category.getParentID()) + "')");
+                        "'" + UUIDConverter.uuidToString(category.getParentID()) + "')").replaceAll("'null'", "NULL"));
                 return true;
             } catch (SQLException e) {
                 return false;
@@ -56,10 +56,10 @@ class CategoryDaoImpl implements CategoryDao {
     public boolean update(Category category) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
-                statement.execute("UPDATE categories SET " +
+                statement.execute(("UPDATE categories SET " +
                         "category_name = '" + category.getName() + "', " +
                         "parent_id = '" + UUIDConverter.uuidToString(category.getParentID()) + "', " +
-                        "WHERE id = '" + UUIDConverter.uuidToString(category.getId()) + "'");
+                        "WHERE id = '" + UUIDConverter.uuidToString(category.getId()) + "'").replaceAll("'null'", "NULL"));
                 return true;
             } catch (SQLException e) {
                 return false;

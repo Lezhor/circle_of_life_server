@@ -40,14 +40,14 @@ class TodoDaoImpl implements TodoDao {
     public boolean insert(Todo todo) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
-                statement.execute("INSERT INTO todos (id, user_id, todo_name, category_id, productiveness, done, due_date) VALUES (" +
+                statement.execute(("INSERT INTO todos (id, user_id, todo_name, category_id, productiveness, done, due_date) VALUES (" +
                         "'" + UUIDConverter.uuidToString(todo.getId()) + "', " +
                         "'" + UUIDConverter.uuidToString(todo.getUserID()) + "', " +
                         "'" + todo.getName() + "', " +
                         "'" + UUIDConverter.uuidToString(todo.getCategoryID()) + "', " +
                         todo.getProductive() + ", " +
                         todo.isDone() + ", " +
-                        "'" + LocalDateTimeConverter.localDateTimeToString(todo.getDueDate()) + "')");
+                        "'" + LocalDateTimeConverter.localDateTimeToString(todo.getDueDate()) + "')").replaceAll("'null'", "NULL"));
                 return true;
             } catch (SQLException e) {
                 return false;
@@ -59,13 +59,13 @@ class TodoDaoImpl implements TodoDao {
     public boolean update(Todo todo) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
-                statement.execute("UPDATE todos SET " +
+                statement.execute(("UPDATE todos SET " +
                         "todo_name = '" + todo.getName() + "', " +
                         "category_id = '" + UUIDConverter.uuidToString(todo.getCategoryID()) + "', " +
                         "productiveness = " + todo.getProductive() + ", " +
                         "done = " + todo.isDone() + ", " +
                         "due_date = '" + LocalDateTimeConverter.localDateTimeToString(todo.getDueDate()) + "' " +
-                        "WHERE id = '" + UUIDConverter.uuidToString(todo.getId()) + "'");
+                        "WHERE id = '" + UUIDConverter.uuidToString(todo.getId()) + "'").replaceAll("'null'", "NULL"));
                 return true;
             } catch (SQLException e) {
                 return false;

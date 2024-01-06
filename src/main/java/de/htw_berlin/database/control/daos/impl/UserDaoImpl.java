@@ -42,11 +42,11 @@ class UserDaoImpl implements UserDao {
     public boolean insert(User user) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
-                statement.execute("INSERT INTO users (user_id, username, password, creation_time) VALUES (" +
+                statement.execute(("INSERT INTO users (user_id, username, password, creation_time) VALUES (" +
                         "'" + UUIDConverter.uuidToString(user.getUserID()) + "', " +
                         "'" + user.getUsername() + "', " +
                         "'" + user.getPassword() + "', " +
-                        "'" + LocalDateTimeConverter.localDateTimeToString(user.getTimeOfCreation()) + "')");
+                        "'" + LocalDateTimeConverter.localDateTimeToString(user.getTimeOfCreation()) + "')").replaceAll("'null'", "NULL"));
             } catch (SQLException e) {
                 return false;
             }
@@ -58,11 +58,11 @@ class UserDaoImpl implements UserDao {
     public boolean update(User user) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
-                statement.execute("UPDATE users SET " +
+                statement.execute(("UPDATE users SET " +
                         "username = '" + user.getUsername() + "', " +
                         "password = '" + user.getPassword() + "', " +
                         "creation_time = '" + LocalDateTimeConverter.localDateTimeToString(user.getTimeOfCreation()) + "' " +
-                        "WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
+                        "WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'").replaceAll("'null'", "NULL"));
             } catch (SQLException e) {
                 return false;
             }
@@ -139,7 +139,6 @@ class UserDaoImpl implements UserDao {
                 statement.execute("DELETE FROM cycles WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
                 statement.execute("DELETE FROM categories WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
                 statement.execute("DELETE FROM users WHERE user_id = '" + UUIDConverter.uuidToString(user.getId()) + "'");
-                Log.d(TAG, "Cleared user: " + user);
             } catch (SQLException e) {
                 return false;
             }

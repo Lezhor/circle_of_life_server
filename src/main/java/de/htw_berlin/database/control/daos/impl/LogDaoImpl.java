@@ -41,11 +41,11 @@ class LogDaoImpl implements LogDao {
     public boolean insert(DBLog<?> log) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
-                statement.execute("INSERT INTO logs (id, user_id, timestamp, content) VALUES (" +
+                statement.execute(("INSERT INTO logs (id, user_id, timestamp, content) VALUES (" +
                         "'" + UUIDConverter.uuidToString(log.getId()) + "', " +
                         "'" + UUIDConverter.uuidToString(log.getUserId()) + "', " +
                         "'" + LocalDateTimeConverter.localDateTimeToString(log.getTimestamp()) + "', " +
-                        "'" + DBLogConverter.dbLogToString(log) + "')");
+                        "'" + DBLogConverter.dbLogToString(log) + "')").replaceAll("'null'", "NULL"));
                 return true;
             } catch (SQLException e) {
                 return false;

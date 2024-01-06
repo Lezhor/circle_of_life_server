@@ -41,7 +41,7 @@ class AccomplishmentDaoImpl implements AccomplishmentDao {
     public boolean insert(Accomplishment accomplishment) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
-                statement.execute("INSERT INTO accomplishments (id, user_id, cycle_id, todo_id, name, description, productiveness, date, timestamp, duration) VALUES (" +
+                statement.execute(("INSERT INTO accomplishments (id, user_id, cycle_id, todo_id, name, description, productiveness, date, timestamp, duration) VALUES (" +
                         "'" + UUIDConverter.uuidToString(accomplishment.getId()) + "', " +
                         "'" + UUIDConverter.uuidToString(accomplishment.getUserID()) + "', " +
                         "'" + UUIDConverter.uuidToString(accomplishment.getCycleID()) + "', " +
@@ -51,7 +51,7 @@ class AccomplishmentDaoImpl implements AccomplishmentDao {
                         accomplishment.getProductiveness() + ", " +
                         "'" + LocalDateTimeConverter.localDateToString(accomplishment.getDate()) + "', " +
                         "'" + LocalDateTimeConverter.localTimeToString(accomplishment.getTimestamp()) + "', " +
-                        accomplishment.getDurationMillis() + ")");
+                        accomplishment.getDurationMillis() + ")").replaceAll("'null'", "NULL"));
                 return true;
             } catch (SQLException e) {
                 return false;
@@ -63,7 +63,7 @@ class AccomplishmentDaoImpl implements AccomplishmentDao {
     public boolean update(Accomplishment accomplishment) {
         return Boolean.TRUE.equals(JDBCController.executeInDB(con -> {
             try (Statement statement = con.createStatement()) {
-                statement.execute("UPDATE accomplishments SET " +
+                statement.execute(("UPDATE accomplishments SET " +
                         "cycle_id = '" + UUIDConverter.uuidToString(accomplishment.getCycleID()) + "', " +
                         "todo_id = '" + UUIDConverter.uuidToString(accomplishment.getTodoID()) + "', " +
                         "name = '" + accomplishment.getName() + "', " +
@@ -72,7 +72,7 @@ class AccomplishmentDaoImpl implements AccomplishmentDao {
                         "date = '" + LocalDateTimeConverter.localDateToString(accomplishment.getDate()) + "', " +
                         "timestamp = '" + LocalDateTimeConverter.localTimeToString(accomplishment.getTimestamp()) + "', " +
                         "duration = " + accomplishment.getDurationMillis() +
-                        " WHERE id = '" + UUIDConverter.uuidToString(accomplishment.getId()) + "'");
+                        " WHERE id = '" + UUIDConverter.uuidToString(accomplishment.getId()) + "'").replaceAll("'null'", "NULL"));
                 return true;
             } catch (SQLException e) {
                 return false;
