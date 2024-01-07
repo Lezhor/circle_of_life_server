@@ -162,6 +162,77 @@ public class SyncEngineImplTest {
         tearDown();
     }
 
+    /**
+     * Test following scenario:<br>
+     * Suppose there is an Entity E in the database.<br>
+     * <pre>
+     *     Client A updates E at timestamp 1
+     *     Client B updates E at timestamp 2
+     *     Client A syncs at timestamp 3
+     *     Client B syncs at timestamp 4
+     * </pre>
+     * Now if Client A would sync again it would NOT be able to fetch the most recent changes made by B,
+     * because these happened at timestamp 2 and A already has synced everything until timestamp 3
+     */
+    @Test
+    public void testSync3ClientsProblem() {
+        // FIXME: 07.01.2024 somehow fix this problem in Sync-Method!!!
+        setUp();
+        db.insert(category1);
+        Category c2 = category1.copy();
+        c2.setName("Variant 2");
+        Category c3 = category1.copy();
+        c3.setName("Variant 3");
+
+        DBLog<Category> log1 = new DBLog<>(UUID.randomUUID(), user.getUserID(), c2, DBLog.ChangeMode.UPDATE, LocalDateTime.of(2021, 1, 1, 0, 0));
+        DBLog<Category> log2 = new DBLog<>(UUID.randomUUID(), user.getUserID(), c3, DBLog.ChangeMode.UPDATE, LocalDateTime.of(2021, 2, 1, 0, 0));
+
+        // assert db did not change
+        Category actual1 = db.getById(category1.getId(), Category.class);
+        assertFalse(c2.equalsAllParams(actual1));
+        assertFalse(c3.equalsAllParams(actual1));
+
+        SendLogsPDU pduA = new SendLogsPDU(LocalDateTime.of(2020, 1, 1, 0, 0), log1);
+        SendLogsPDU pduARet = App.getSyncEngine().sync(user, pduA);
+
+        // assert db first change
+         Category actual2 = db.getById(category1.getId(), Category.class);
+        assertTrue(c2.equalsAllParams(actual2));
+        assertFalse(c3.equalsAllParams(actual2));
+        assertEquals(0, pduARet.getLogs().length);
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ignored) {
+        }
+
+        SendLogsPDU pduB = new SendLogsPDU(LocalDateTime.of(2020, 1, 1, 0, 0), log2);
+        SendLogsPDU pduBRet = App.getSyncEngine().sync(user, pduB);
+
+        // assert db second change
+        Category actual3 = db.getById(category1.getId(), Category.class);
+        assertFalse(c2.equalsAllParams(actual3));
+        assertTrue(c3.equalsAllParams(actual3));
+        assertEquals(0, pduARet.getLogs().length);
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ignored) {
+        }
+
+        SendLogsPDU pduA2 = new SendLogsPDU(pduARet.getLastSyncDate());
+        SendLogsPDU pduA2Ret = App.getSyncEngine().sync(user, pduA2);
+
+        // assert db after last sync
+        Category actual4 = db.getById(category1.getId(), Category.class);
+        assertFalse(c2.equalsAllParams(actual4));
+        assertTrue(c3.equalsAllParams(actual4));
+        assertEquals(1, pduARet.getLogs().length);
+        assertEquals(log2, pduA2Ret.getLogs()[0]);
+
+        tearDown();
+    }
+
     private DBLog<?>[] getServerLogs(DBLog<?>... logs) {
         List<DBLog<?>> out = new LinkedList<>();
         for (DBLog<?> log : logs) {
