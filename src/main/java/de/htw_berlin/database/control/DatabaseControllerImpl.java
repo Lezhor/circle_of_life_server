@@ -126,8 +126,8 @@ public class DatabaseControllerImpl implements DatabaseController {
     }
 
     @Override
-    public void insertLog(DBLog<?> log) {
-        db.getLogDao().insert(log);
+    public void insertLog(DBLog<?> log, LocalDateTime timestamp) {
+        db.getLogDao().insert(log, timestamp);
     }
 
     @Override

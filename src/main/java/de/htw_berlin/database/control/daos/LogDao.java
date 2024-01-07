@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface LogDao {
 
-    boolean insert(DBLog<?> log);
+    boolean insert(DBLog<?> log, LocalDateTime timestamp);
 
     boolean update(DBLog<?> log);
 

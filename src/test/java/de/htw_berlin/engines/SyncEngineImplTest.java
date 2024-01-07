@@ -66,7 +66,7 @@ public class SyncEngineImplTest {
         );
 
         // Setup Server
-        DBLog<?>[] serverLogs = getServerLogs(logs[0], logs[2], logs[4]);
+        DBLog<?>[] serverLogs = getServerLogs(logs[0].getTimestamp(), logs[0], logs[2], logs[4]);
         DBLog<?>[] clientLogs = getClientLogs(logs[1], logs[3]);
 
         SendLogsPDU clientPDU = getClientPDU(clientLogs);
@@ -108,7 +108,7 @@ public class SyncEngineImplTest {
                 new DBLogBuilder<>(clientsVersion, DBLog.ChangeMode.UPDATE)
                 );
 
-        DBLog<?>[] serverLogs = getServerLogs(logs[0]);
+        DBLog<?>[] serverLogs = getServerLogs(logs[0].getTimestamp(), logs[0]);
         DBLog<?>[] clientLogs = getClientLogs(logs[1]);
 
         // Asserts before sync
@@ -143,7 +143,7 @@ public class SyncEngineImplTest {
                 new DBLogBuilder<>(serverVersion, DBLog.ChangeMode.UPDATE)
         );
 
-        DBLog<?>[] serverLogs = getServerLogs(logs[1]);
+        DBLog<?>[] serverLogs = getServerLogs(logs[1].getTimestamp(), logs[1]);
         DBLog<?>[] clientLogs = getClientLogs(logs[0]);
 
         // Asserts before sync
@@ -176,7 +176,6 @@ public class SyncEngineImplTest {
      */
     @Test
     public void testSync3ClientsProblem() {
-        // FIXME: 07.01.2024 somehow fix this problem in Sync-Method!!!
         setUp();
         db.insert(category1);
         Category c2 = category1.copy();
@@ -213,7 +212,7 @@ public class SyncEngineImplTest {
         Category actual3 = db.getById(category1.getId(), Category.class);
         assertFalse(c2.equalsAllParams(actual3));
         assertTrue(c3.equalsAllParams(actual3));
-        assertEquals(0, pduARet.getLogs().length);
+        assertEquals(0, pduBRet.getLogs().length);
 
         try {
             Thread.sleep(100);
@@ -227,17 +226,17 @@ public class SyncEngineImplTest {
         Category actual4 = db.getById(category1.getId(), Category.class);
         assertFalse(c2.equalsAllParams(actual4));
         assertTrue(c3.equalsAllParams(actual4));
-        assertEquals(1, pduARet.getLogs().length);
+        assertEquals(1, pduA2Ret.getLogs().length);
         assertEquals(log2, pduA2Ret.getLogs()[0]);
 
         tearDown();
     }
 
-    private DBLog<?>[] getServerLogs(DBLog<?>... logs) {
+    private DBLog<?>[] getServerLogs(LocalDateTime insertTimestamp, DBLog<?>... logs) {
         List<DBLog<?>> out = new LinkedList<>();
         for (DBLog<?> log : logs) {
             if (db.executeLog(log)) {
-                db.insertLog(log);
+                db.insertLog(log, insertTimestamp);
             }
             out.add(log);
         }

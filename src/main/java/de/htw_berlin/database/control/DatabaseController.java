@@ -108,7 +108,10 @@ public interface DatabaseController {
 
     // Logs
 
-    void insertLog(DBLog<?> log);
+    void insertLog(DBLog<?> log, LocalDateTime timestamp);
+    default void insertLog(DBLog<?> log) {
+        insertLog(log, log.getTimestamp());
+    }
 
     /**
      * Inserts multiple logs into database

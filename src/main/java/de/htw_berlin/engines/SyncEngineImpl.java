@@ -42,6 +42,7 @@ public class SyncEngineImpl implements SyncEngine {
         DatabaseController db = App.getDatabaseController();
 
         LocalDateTime newLastSyncDate = LocalDateTime.now();
+        LocalDateTime insertTimestamp = newLastSyncDate.minusNanos(1);
 
         List<DBLog<?>> clientLogs = new LinkedList<>(Arrays.asList(clientLogsPDU.getLogs()));
         List<DBLog<?>> serverLogs = App.getDatabaseController().getLogsBetweenTimestamps(client, clientLogsPDU.getLastSyncDate(), newLastSyncDate);
@@ -57,7 +58,7 @@ public class SyncEngineImpl implements SyncEngine {
             boolean validLog = true;
             if (isClient) {
                 if (db.executeLog(log)) {
-                    db.insertLog(log);
+                    db.insertLog(log, insertTimestamp);
                     clientLogsExecuted.add(log);
                 } else {
                     validLog = false;
@@ -77,7 +78,7 @@ public class SyncEngineImpl implements SyncEngine {
             }
         }
 
-        return new SendLogsPDU(clientLogsPDU.getLastSyncDate(), instructions.toArray(DBLog[]::new));
+        return new SendLogsPDU(newLastSyncDate, instructions.toArray(DBLog[]::new));
     }
 
     /**
