@@ -65,15 +65,99 @@ public class SyncEngineImplTest {
                 new DBLogBuilder<>(cycle, DBLog.ChangeMode.INSERT)
         );
 
+        // Setup Server
         DBLog<?>[] serverLogs = getServerLogs(logs[0], logs[2], logs[4]);
         DBLog<?>[] clientLogs = getClientLogs(logs[1], logs[3]);
 
         SendLogsPDU clientPDU = getClientPDU(clientLogs);
 
+        // Asserts before sync
+        assertTrue(db.exists(category1));
+        assertFalse(db.exists(category2));
+        assertTrue(db.exists(cycle));
+        assertFalse(db.exists(todo));
+
+
         SendLogsPDU returnedPDU = App.getSyncEngine().sync(user, clientPDU);
+
+        // Asserts after sync
+        assertTrue(db.exists(category1));
+        assertTrue(db.exists(category2));
+        assertTrue(db.exists(cycle));
+        assertTrue(db.exists(todo));
 
         assertArrayEquals(returnedPDU.getLogs(), serverLogs);
         // TODO: 06.01.2024 Assert stuff with database
+
+        tearDown();
+    }
+
+    @Test
+    public void testSyncUpdateClientOverrides() {
+        setUp();
+
+        db.insert(category1);
+
+        Category clientsVersion = category1.copy();
+        clientsVersion.setName("Clients Category");
+        Category serverVersion = category1.copy();
+        serverVersion.setName("Servers Category");
+
+        DBLog<?>[] logs = generateLogs(user,
+                new DBLogBuilder<>(serverVersion, DBLog.ChangeMode.UPDATE),
+                new DBLogBuilder<>(clientsVersion, DBLog.ChangeMode.UPDATE)
+                );
+
+        DBLog<?>[] serverLogs = getServerLogs(logs[0]);
+        DBLog<?>[] clientLogs = getClientLogs(logs[1]);
+
+        // Asserts before sync
+        assertTrue(serverVersion.equalsAllParams(db.getById(category1.getId(), Category.class)));
+        assertFalse(clientsVersion.equalsAllParams(db.getById(category1.getId(), Category.class)));
+
+        SendLogsPDU receivedPDU = App.getSyncEngine().sync(user, getClientPDU(clientLogs));
+
+        // Assert no changes for client
+        assertEquals(0, receivedPDU.getLogs().length);
+
+        // Asserts after sync
+        assertFalse(serverVersion.equalsAllParams(db.getById(category1.getId(), Category.class)));
+        assertTrue(clientsVersion.equalsAllParams(db.getById(category1.getId(), Category.class)));
+
+        tearDown();
+    }
+
+    @Test
+    public void testSyncUpdateServerOverrides() {
+        setUp();
+
+        db.insert(category1);
+
+        Category clientsVersion = category1.copy();
+        clientsVersion.setName("Clients Category");
+        Category serverVersion = category1.copy();
+        serverVersion.setName("Servers Category");
+
+        DBLog<?>[] logs = generateLogs(user,
+                new DBLogBuilder<>(clientsVersion, DBLog.ChangeMode.UPDATE),
+                new DBLogBuilder<>(serverVersion, DBLog.ChangeMode.UPDATE)
+        );
+
+        DBLog<?>[] serverLogs = getServerLogs(logs[1]);
+        DBLog<?>[] clientLogs = getClientLogs(logs[0]);
+
+        // Asserts before sync
+        assertTrue(serverVersion.equalsAllParams(db.getById(category1.getId(), Category.class)));
+        assertFalse(clientsVersion.equalsAllParams(db.getById(category1.getId(), Category.class)));
+
+        SendLogsPDU receivedPDU = App.getSyncEngine().sync(user, getClientPDU(clientLogs));
+
+        // Assert no changes for client
+        assertArrayEquals(serverLogs, receivedPDU.getLogs());
+
+        // Asserts after sync
+        assertTrue(serverVersion.equalsAllParams(db.getById(category1.getId(), Category.class)));
+        assertFalse(clientsVersion.equalsAllParams(db.getById(category1.getId(), Category.class)));
 
         tearDown();
     }
