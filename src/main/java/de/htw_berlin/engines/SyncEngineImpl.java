@@ -45,7 +45,7 @@ public class SyncEngineImpl implements SyncEngine {
         LocalDateTime insertTimestamp = newLastSyncDate.minusNanos(1);
 
         List<DBLog<?>> clientLogs = new LinkedList<>(Arrays.asList(clientLogsPDU.getLogs()));
-        List<DBLog<?>> serverLogs = App.getDatabaseController().getLogsBetweenTimestamps(client, clientLogsPDU.getLastSyncDate(), newLastSyncDate);
+        List<DBLog<?>> serverLogs = db.getLogsBetweenTimestamps(client, clientLogsPDU.getLastSyncDate(), newLastSyncDate);
 
         DBLogQueue queue = new DBLogQueue(serverLogs, clientLogs);
 
@@ -118,9 +118,8 @@ public class SyncEngineImpl implements SyncEngine {
         if (oldLog.getChangedObject().equals(newLog.getChangedObject())) {
             if (newLog.getChangeMode() == DBLog.ChangeMode.DELETE) {
                 return true;
-            } else if (oldLog.getChangeMode() == DBLog.ChangeMode.UPDATE && oldLog.getChangeMode() == DBLog.ChangeMode.UPDATE) {
-                return true;
             }
+            return oldLog.getChangeMode() == DBLog.ChangeMode.UPDATE && newLog.getChangeMode() == DBLog.ChangeMode.UPDATE;
         }
         return false;
     }
