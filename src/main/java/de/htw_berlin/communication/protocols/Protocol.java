@@ -20,6 +20,10 @@ public interface Protocol {
     static Protocol get(String name, String version) {
         if (name.equals(SyncProtocolEngine.PROTOCOL_NAME) && SyncProtocolEngine.supportsVersion(version)) {
             return new SyncProtocolEngine();
+        } else if (name.equals(LoginProtocol.PROTOCOL_NAME) && LoginProtocol.supportsVersion(version)) {
+            return new LoginProtocol();
+        } else if (name.equals(SignUpProtocol.PROTOCOL_NAME) && SignUpProtocol.supportsVersion(version)) {
+            return new SignUpProtocol();
         } else {
             return null;
         }
