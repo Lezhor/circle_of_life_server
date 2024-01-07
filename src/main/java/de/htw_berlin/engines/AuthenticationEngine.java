@@ -23,4 +23,12 @@ public interface AuthenticationEngine {
      */
     User getAuthenticatedUser(String username, String password);
 
+    /**
+     * Creates new user and inserts into database, if username is not taken, ans username and password are valid
+     * @param username username
+     * @param password password
+     * @return created user or null if didn't work
+     */
+    User signUp(String username, String password);
+
 }

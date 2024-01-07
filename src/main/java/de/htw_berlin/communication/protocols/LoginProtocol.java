@@ -1,5 +1,13 @@
 package de.htw_berlin.communication.protocols;
 
+import de.htw_berlin.application.App;
+import de.htw_berlin.communication.pdus.PDU;
+import de.htw_berlin.communication.pdus.auth.LoginFailedPDU;
+import de.htw_berlin.communication.pdus.auth.SendLoginAuthDataPDU;
+import de.htw_berlin.communication.pdus.auth.SendUserPDU;
+import de.htw_berlin.database.models.User;
+import de.htw_berlin.logging.Log;
+
 import java.io.IOException;
 import java.net.Socket;
 
@@ -15,8 +23,26 @@ public class LoginProtocol implements Protocol {
 
     @Override
     public void run(Socket socket) throws IOException {
-        // TODO: 07.01.2024 Login Protocol
-        throw new IOException("Protocol not implemented yet");
+        String client = "Client '" + socket.getRemoteSocketAddress().toString() + "' - ";
+
+        ProtocolSerializer serializer = new ProtocolSerializer(this, socket);
+
+        // Step 1:
+        SendLoginAuthDataPDU sendLoginAuthDataPDU = serializer.deserialize(SendLoginAuthDataPDU.class);
+        Log.d(TAG, client + "received login request with user " + sendLoginAuthDataPDU.getUsername());
+
+        User authenticatedUser = App.getAuthenticationEngine().getAuthenticatedUser(sendLoginAuthDataPDU.getUsername(), sendLoginAuthDataPDU.getPassword());
+
+        // Step 2:
+        PDU answer;
+        if (authenticatedUser != null) {
+            Log.d(TAG, client + "User authenticated: " + authenticatedUser);
+            answer = new SendUserPDU(authenticatedUser);
+        } else {
+            Log.d(TAG, client + "User NOT authenticated!");
+            answer = new LoginFailedPDU();
+        }
+        serializer.serialize(answer);
     }
 
     @Override
