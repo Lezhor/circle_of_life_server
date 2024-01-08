@@ -9,16 +9,6 @@ import java.sql.SQLException;
 public class JDBCController {
     private static final String TAG = JDBCController.class.getSimpleName();
 
-    public static void executeInDB(SQLQuery task) {
-        executeInDB(con -> {
-            try {
-                task.execute(con);
-            } catch (SQLException ignored) {
-            }
-            return null;
-        });
-    }
-
     public static <T> T executeInDB(SQLQueryWithResult<T> task) {
         Connection connection = null;
         T result = null;
@@ -26,6 +16,7 @@ public class JDBCController {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
+            Log.w(TAG, "JDBC-Driver not found!", e);
             return null;
         }
         try {

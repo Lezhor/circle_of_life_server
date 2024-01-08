@@ -48,7 +48,8 @@ public class SyncProtocolEngine implements Protocol {
 
             // Step 3:
             SendLogsPDU logsPDU = serializer.deserialize(SendLogsPDU.class);
-            Log.d(TAG, client + "received " + logsPDU.getLogs().length + " logs from client. LastSyncDate: " + LocalDateTimeConverter.localDateTimeToString(logsPDU.getLastSyncDate()));
+            Log.d(TAG, client + "received " + logsPDU.getLogs().length + " logs from client. ");
+            Log.d(TAG, client + "LastSyncDate: " + LocalDateTimeConverter.localDateTimeToString(logsPDU.getLastSyncDate()));
 
 
             // Step 4:

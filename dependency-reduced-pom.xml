@@ -1,45 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>de.htw-berlin</groupId>
   <artifactId>CircleOfLifeServer</artifactId>
-  <version>1.0</version>
-  <packaging>jar</packaging>
-
   <name>CircleOfLifeServer</name>
+  <version>1.0</version>
   <url>http://maven.apache.org</url>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.release>19</maven.compiler.release>
-	<start>de.htw_berlin.application.Main</start>
-  </properties>
-
-  <dependencies>
-    <!-- JUnit Test -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.10.0</version>
-      <scope>test</scope>
-    </dependency>
-
-
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>42.7.1</version>
-    </dependency>
-
-  </dependencies>
-
   <build>
     <plugins>
-
-      <!-- Java 19 Compiler -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
         <configuration>
@@ -47,10 +16,7 @@
           <target>19</target>
         </configuration>
       </plugin>
-
-      <!-- Packaging to jar files -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <version>3.3.0</version>
         <executions>
@@ -67,41 +33,17 @@
           </execution>
         </executions>
       </plugin>
-
-      <!-- Needed for JavaDoc -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <version>3.7.1</version>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>3.0.0</version>
       </plugin>
-
-      <!-- Build an executable JAR -->
-      <!--
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>de.htw_berlin.application.Main</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-      -->
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.4</version> <!-- Use a recent version -->
+        <version>3.2.4</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -110,13 +52,12 @@
             </goals>
             <configuration>
               <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                <transformer>
                   <mainClass>de.htw_berlin.application.Main</mainClass>
                 </transformer>
               </transformers>
               <filters>
                 <filter>
-                  <!-- Exclude the META-INF/MANIFEST.MF file from merging -->
                   <artifact>*:*</artifact>
                   <excludes>
                     <exclude>META-INF/MANIFEST.MF</exclude>
@@ -127,24 +68,44 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
-
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.10.0</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>opentest4j</artifactId>
+          <groupId>org.opentest4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>junit-platform-commons</artifactId>
+          <groupId>org.junit.platform</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>apiguardian-api</artifactId>
+          <groupId>org.apiguardian</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
   <reporting>
     <plugins>
-
-      <!-- JavaDoc -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.6.2</version>
         <configuration>
           <show>package</show>
         </configuration>
       </plugin>
-
     </plugins>
   </reporting>
-
+  <properties>
+    <maven.compiler.release>19</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <start>de.htw_berlin.application.Main</start>
+  </properties>
 </project>
