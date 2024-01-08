@@ -2,6 +2,7 @@ package de.htw_berlin.communication.protocols;
 
 import de.htw_berlin.application.App;
 import de.htw_berlin.communication.pdus.sync.*;
+import de.htw_berlin.database.models.type_converters.LocalDateTimeConverter;
 import de.htw_berlin.logging.Log;
 
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class SyncProtocolEngine implements Protocol {
 
             // Step 3:
             SendLogsPDU logsPDU = serializer.deserialize(SendLogsPDU.class);
-            Log.d(TAG, client + "received " + logsPDU.getLogs().length + " logs from client");
+            Log.d(TAG, client + "received " + logsPDU.getLogs().length + " logs from client. LastSyncDate: " + LocalDateTimeConverter.localDateTimeToString(logsPDU.getLastSyncDate()));
 
 
             // Step 4:

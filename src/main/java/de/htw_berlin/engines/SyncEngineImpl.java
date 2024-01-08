@@ -6,6 +6,7 @@ import de.htw_berlin.database.control.DatabaseController;
 import de.htw_berlin.database.models.User;
 import de.htw_berlin.engines.models.DBLog;
 import de.htw_berlin.engines.models.DBLogQueue;
+import de.htw_berlin.logging.Log;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -16,6 +17,7 @@ import java.util.List;
  * Implements the {@link SyncEngine}
  */
 public class SyncEngineImpl implements SyncEngine {
+    private static final String TAG = SyncEngine.class.getSimpleName();
 
     private static volatile SyncEngineImpl instance;
 
@@ -61,6 +63,7 @@ public class SyncEngineImpl implements SyncEngine {
                     db.insertLog(log, insertTimestamp);
                     clientLogsExecuted.add(log);
                 } else {
+                    Log.w(TAG, "Executing client log failed: " + log);
                     validLog = false;
                 }
             } else {
