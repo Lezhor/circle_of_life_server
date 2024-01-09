@@ -53,8 +53,10 @@ public class PDUSerializer {
             case SendInstructionsPDU.ID -> SendInstructionsPDU.fromInputStream(is);
             case SyncSuccessfulPDU.ID -> SyncSuccessfulPDU.fromInputStream(is);
             case SendLoginAuthDataPDU.ID -> SendLoginAuthDataPDU.fromInputStream(is);
-            case LoginFailedPDU.ID -> LoginFailedPDU.fromInputStream(is);
             case SendUserPDU.ID -> SendUserPDU.fromInputStream(is);
+            case LoginFailedPDU.ID -> LoginFailedPDU.fromInputStream(is);
+            case SignUpFailedPDU.ID -> SignUpFailedPDU.fromInputStream(is);
+            case SignUpSucceededPDU.ID -> SignUpSucceededPDU.fromInputStream(is);
             default -> throw new IOException("Failed to deserialize PDU");
         };
     }
