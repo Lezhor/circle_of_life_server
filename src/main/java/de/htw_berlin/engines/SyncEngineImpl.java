@@ -43,11 +43,12 @@ public class SyncEngineImpl implements SyncEngine {
 
         DatabaseController db = App.getDatabaseController();
 
+        LocalDateTime lastSyncDate = clientLogsPDU.getLastSyncDate() != null ? clientLogsPDU.getLastSyncDate() : client.getTimeOfCreation();
         LocalDateTime newLastSyncDate = LocalDateTime.now();
         LocalDateTime insertTimestamp = newLastSyncDate.minusNanos(1);
 
         List<DBLog<?>> clientLogs = new LinkedList<>(Arrays.asList(clientLogsPDU.getLogs()));
-        List<DBLog<?>> serverLogs = db.getLogsBetweenTimestamps(client, clientLogsPDU.getLastSyncDate(), newLastSyncDate);
+        List<DBLog<?>> serverLogs = db.getLogsBetweenTimestamps(client, lastSyncDate, newLastSyncDate);
 
         DBLogQueue queue = new DBLogQueue(serverLogs, clientLogs);
 
