@@ -63,14 +63,14 @@ public class LogDaoImplTest {
         setUp();
 
         assertEquals(0, dao.getLogs(user).size());
-        db.insertLog(logs[0], LocalDateTime.now());
+        db.insertLog(logs[0], LocalDateTime.now(App.SERVER_TIMEZONE));
         assertEquals(1, dao.getLogs(user).size());
-        db.insertLog(logs[0], LocalDateTime.now());
+        db.insertLog(logs[0], LocalDateTime.now(App.SERVER_TIMEZONE));
         assertEquals(1, dao.getLogs(user).size());
-        db.insertLog(logs[1], LocalDateTime.now());
-        db.insertLog(logs[2], LocalDateTime.now());
-        db.insertLog(logs[3], LocalDateTime.now());
-        db.insertLog(logs[4], LocalDateTime.now());
+        db.insertLog(logs[1], LocalDateTime.now(App.SERVER_TIMEZONE));
+        db.insertLog(logs[2], LocalDateTime.now(App.SERVER_TIMEZONE));
+        db.insertLog(logs[3], LocalDateTime.now(App.SERVER_TIMEZONE));
+        db.insertLog(logs[4], LocalDateTime.now(App.SERVER_TIMEZONE));
         assertEquals(5, dao.getLogs(user).size());
 
         tearDown();

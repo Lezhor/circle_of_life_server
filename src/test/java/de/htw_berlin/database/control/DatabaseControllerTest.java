@@ -39,7 +39,7 @@ public class DatabaseControllerTest {
                 fail(e);
             }
         }
-        user = new User(UUID.randomUUID(), USER_NAME, "this_is_a_password", LocalDateTime.now());
+        user = new User(UUID.randomUUID(), USER_NAME, "this_is_a_password", LocalDateTime.now(App.SERVER_TIMEZONE));
         category = new Category(UUID.randomUUID(), "TestCategory", user.getUserID(), null);
         cycle = new Cycle(UUID.randomUUID(), "TestCycle", user.getUserID(), category.getId(), 1, CycleFrequency.fromBinaryString("10010011"));
         todo = new Todo(UUID.randomUUID(), "TestTodo", user.getUserID(), category.getId(), -1, true, null);
@@ -70,7 +70,7 @@ public class DatabaseControllerTest {
     public void testInsertUserWithSameUsernameShouldFail() {
         setUp();
         Log.d(TAG, "Testing insert user with same username should fail");
-        assertFalse(db.insert(new User(UUID.randomUUID(), USER_NAME, "another_password", LocalDateTime.now())));
+        assertFalse(db.insert(new User(UUID.randomUUID(), USER_NAME, "another_password", LocalDateTime.now(App.SERVER_TIMEZONE))));
         tearDown();
     }
 

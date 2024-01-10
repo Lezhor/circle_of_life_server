@@ -1,5 +1,7 @@
 package de.htw_berlin.logging;
 
+import de.htw_berlin.application.App;
+
 import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -88,7 +90,7 @@ public final class Log {
      * @return timestamp
      */
     static String getTimestamp() {
-        LocalDateTime timestamp = LocalDateTime.now();
+        LocalDateTime timestamp = LocalDateTime.now(App.SERVER_TIMEZONE);
         return "[" + timestamp.format(DateTimeFormatter.ofPattern("hh:mm:ss:nnnn")).substring(0, 13) + "]";
     }
 

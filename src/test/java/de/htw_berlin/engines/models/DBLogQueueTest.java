@@ -1,5 +1,6 @@
 package de.htw_berlin.engines.models;
 
+import de.htw_berlin.application.App;
 import de.htw_berlin.database.models.*;
 import de.htw_berlin.database.models.additional.CycleFrequency;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,7 @@ class DBLogQueueTest {
     @Test
     public void testEqualTimestampServerFirst() {
         setUp();
-        LocalDateTime timestamp = LocalDateTime.now();
+        LocalDateTime timestamp = LocalDateTime.now(App.SERVER_TIMEZONE);
         List<DBLog<?>> serverLogs = new LinkedList<>();
         List<DBLog<?>> clientLogs = new LinkedList<>();
         serverLogs.add(new DBLog<>(UUID.randomUUID(), user.getUserID(), category1, DBLog.ChangeMode.INSERT, timestamp));

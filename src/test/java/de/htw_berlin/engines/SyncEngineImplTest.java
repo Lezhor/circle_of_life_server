@@ -40,7 +40,7 @@ public class SyncEngineImplTest {
         category2 = new Category(UUID.randomUUID(), "Category 2", user.getUserID(), null);
         category3 = new Category(UUID.randomUUID(), "Category 3", user.getUserID(), null);
         cycle = new Cycle(UUID.randomUUID(), "Cycle 1", user.getUserID(), category1.getId(), 0, CycleFrequency.fromBinaryString("10000001"), false);
-        todo = new Todo(UUID.randomUUID(), "Todo 1", user.getUserID(), category2.getId(), 1, true, LocalDateTime.now());
+        todo = new Todo(UUID.randomUUID(), "Todo 1", user.getUserID(), category2.getId(), 1, true, LocalDateTime.now(App.SERVER_TIMEZONE));
     }
 
     private void tearDown() {

@@ -1,5 +1,6 @@
 package de.htw_berlin.engines.models;
 
+import de.htw_berlin.application.App;
 import de.htw_berlin.database.models.Entity;
 import de.htw_berlin.database.models.*;
 import de.htw_berlin.database.models.additional.Copyable;
@@ -113,7 +114,7 @@ public class DBLog<E extends Entity> implements Comparable<DBLog<?>> {
         this.changedObject = changedObject.copy();
         this.userID = this.changedObject.getUserID();
         this.changeMode = changeMode;
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = LocalDateTime.now(App.SERVER_TIMEZONE);
     }
 
     /**

@@ -62,7 +62,7 @@ public class AuthenticationEngineImpl implements AuthenticationEngine {
         } else {
             User user;
             try {
-                user = new User(UUID.randomUUID(), username, password, LocalDateTime.now());
+                user = new User(UUID.randomUUID(), username, password, LocalDateTime.now(App.SERVER_TIMEZONE));
             } catch (Exception e) {
                 return null;
             }

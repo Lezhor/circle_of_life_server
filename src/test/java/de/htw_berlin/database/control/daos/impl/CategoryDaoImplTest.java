@@ -27,7 +27,7 @@ public class CategoryDaoImplTest {
         } catch (OperationNotSupportedException e) {
             fail(e);
         }
-        user = new User(UUID.randomUUID(), username, "test_password", LocalDateTime.now());
+        user = new User(UUID.randomUUID(), username, "test_password", LocalDateTime.now(App.SERVER_TIMEZONE));
         category = new Category(UUID.randomUUID(), "TestCategory", user.getUserID(), null);
         db.insert(user);
     }
