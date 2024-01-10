@@ -40,7 +40,11 @@ public class SendLogsPDU implements PDU {
     public void serialize(OutputStream os) throws IOException {
         DataOutputStream dos = new DataOutputStream(os);
         dos.writeInt(getID());
-        dos.writeUTF(LocalDateTimeConverter.localDateTimeToString(lastSyncDate));
+        String lastSyncDateString = LocalDateTimeConverter.localDateTimeToString(lastSyncDate);
+        if (lastSyncDateString == null) {
+            lastSyncDateString = "null";
+        }
+        dos.writeUTF(lastSyncDateString);
         dos.writeInt(logArray.length);
         LogSerializer logSerializer = LogSerializer.getInstance();
         for (DBLog<?> log : logArray) {
