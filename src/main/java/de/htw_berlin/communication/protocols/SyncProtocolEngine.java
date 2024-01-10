@@ -3,6 +3,7 @@ package de.htw_berlin.communication.protocols;
 import de.htw_berlin.application.App;
 import de.htw_berlin.communication.pdus.sync.*;
 import de.htw_berlin.database.models.type_converters.LocalDateTimeConverter;
+import de.htw_berlin.engines.models.DBLog;
 import de.htw_berlin.logging.Log;
 
 import java.io.IOException;
@@ -50,11 +51,19 @@ public class SyncProtocolEngine implements Protocol {
             SendLogsPDU logsPDU = serializer.deserialize(SendLogsPDU.class);
             Log.d(TAG, client + "received " + logsPDU.getLogs().length + " logs from client. ");
             Log.d(TAG, client + "LastSyncDate: " + LocalDateTimeConverter.localDateTimeToString(logsPDU.getLastSyncDate()));
+            // TODO: 10.01.2024 Remove debug
+            for (DBLog<?> log : logsPDU.getLogs()) {
+                Log.d(TAG, client + "received: " + log);
+            }
 
 
             // Step 4:
             SendLogsPDU sendLogsPDU = App.getSyncEngine().sync(sendAuthPDU.getUser(), logsPDU);
             Log.d(TAG, client + "sending " + sendLogsPDU.getLogs().length + " instructions to client");
+            // TODO: 10.01.2024 Remove debug 
+            for (DBLog<?> log : sendLogsPDU.getLogs()) {
+                Log.d(TAG, client + "sending: " + log);
+            }
             serializer.serialize(sendLogsPDU);
 
             // Step 5:
