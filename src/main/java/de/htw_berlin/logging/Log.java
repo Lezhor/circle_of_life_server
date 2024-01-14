@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Used to logging what happens to PrintStreams (e.g. System.out)
+ * Used to logging what happens to PrintStreams (e.g. System.out)<br>
+ * Design is the same as in Androids Logcat-System :)
  */
 public final class Log {
 
