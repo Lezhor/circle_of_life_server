@@ -51,6 +51,11 @@ public class SyncEngineImplTest {
         Log.logToConsole(false);
     }
 
+    /**
+     * A general SyncCase<br>
+     * Creates 5 Logs. second and fourth are client logs, the other 3 are executed on the server before the sync.
+     * Than the sync happens: The SyncEngine should return the serverlogs 1,3,5. Also changes from the client-logs should be applied to the database.
+     */
     @Test
     public void testSync() {
         setUp();
